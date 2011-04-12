@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="fill_parent"
+  android:layout_height="fill_parent">
+    <TextView 
+    	android:text="Session Title" 
+    	android:id="@+id/title" 
+    	android:textSize="10pt"
+    	android:layout_width="wrap_content"
+    	android:gravity="center_vertical|center_horizontal"
+    	android:layout_centerHorizontal="true"
+    	android:layout_height="25pt"/>
+    <TextView 
+    	android:text="Exercise Type:" 
+    	android:id="@+id/exercise_type_label" 
+    	android:textSize="8pt"
+    	android:gravity="center_vertical|right"
+    	android:layout_gravity="center_vertical"
+    	android:layout_marginLeft="10pt"
+    	android:layout_width="60pt" 
+    	android:paddingBottom="3pt"
+    	android:layout_height="24pt"
+    	android:layout_below="@id/title"/>
+    
+    <TextView 
+    	android:text="Type" 
+    	android:id="@+id/exercise_type" 
+    	android:textSize="9pt"
+    	android:gravity="center_vertical|center_horizontal"
+    	android:layout_gravity="center_vertical"
+    	android:layout_marginLeft="10pt"
+    	android:layout_width="80pt" 
+    	android:paddingBottom="3pt"
+    	android:layout_height="24pt"
+    	android:textColor="#0099CC"
+    	android:layout_toRightOf="@+id/exercise_type_label"
+    	android:layout_below="@id/title"/>
+    
+    <TextView 
+    	android:text="Time Elapsed:" 
+    	android:id="@+id/time_elapsed_label" 
+    	android:textSize="8pt"
+    	android:gravity="center_vertical|right"
+    	android:layout_gravity="center_vertical"
+    	android:layout_marginLeft="10pt"
+    	android:layout_width="60pt" 
+    	android:paddingBottom="3pt"
+    	android:layout_height="24pt"
+    	android:layout_below="@id/exercise_type"/>
+    
+    <Chronometer 
+    	android:text="00:00:00" 
+    	android:id="@+id/time_elapsed" 
+    	android:textSize="9pt"
+    	android:gravity="center_vertical|center_horizontal"
+    	android:layout_gravity="center_vertical"
+    	android:layout_marginLeft="10pt"
+    	android:layout_width="80pt" 
+    	android:paddingBottom="3pt"
+    	android:layout_height="24pt"
+    	android:textColor="#0099CC"
+    	android:layout_toRightOf="@+id/time_elapsed_label"
+    	android:layout_below="@id/exercise_type"/>
+    	
+    <TextView 
+    	android:text="Distance Traveled:" 
+    	android:id="@+id/distance_traveled_label" 
+    	android:textSize="8pt"
+    	android:gravity="center_vertical|right"
+    	android:layout_gravity="center_vertical"
+    	android:layout_marginLeft="10pt"
+    	android:layout_width="60pt" 
+    	android:paddingBottom="3pt"
+    	android:layout_height="24pt"
+    	android:layout_below="@+id/time_elapsed"/>
+    
+    <TextView 
+    	android:text="0" 
+    	android:id="@+id/distance_traveled" 
+    	android:textSize="9pt"
+    	android:gravity="center_vertical|center_horizontal"
+    	android:layout_gravity="center_vertical"
+    	android:layout_marginLeft="10pt"
+    	android:layout_width="80pt" 
+    	android:paddingBottom="3pt"
+    	android:layout_height="24pt"
+    	android:textColor="#0099CC"
+    	android:layout_toRightOf="@+id/exercise_type_label"
+    	android:layout_below="@+id/time_elapsed"/>
+    	
+    <TextView 
+    	android:text="Calories Burned:" 
+    	android:id="@+id/calories_burned_label" 
+    	android:textSize="8pt"
+    	android:gravity="center_vertical|right"
+    	android:layout_gravity="center_vertical|center_horizontal"
+    	android:layout_marginLeft="10pt"
+    	android:layout_width="60pt" 
+    	android:paddingBottom="3pt"
+    	android:layout_height="24pt"
+    	android:layout_below="@+id/distance_traveled"/>
+    
+    <TextView 
+    	android:text="-" 
+    	android:id="@+id/calories_burned" 
+    	android:textSize="9pt"
+    	android:gravity="center_vertical|center_horizontal"
+    	android:layout_gravity="center_vertical"
+    	android:layout_marginLeft="10pt"
+    	android:layout_width="80pt" 
+    	android:paddingBottom="3pt"
+    	android:layout_height="24pt"
+    	android:textColor="#0099CC"
+    	android:layout_toRightOf="@+id/exercise_type_label"
+    	android:layout_below="@+id/distance_traveled"/>
+    	
+    <TextView 
+    	android:text="Calories Left:" 
+    	android:id="@+id/calories_left_label" 
+    	android:textSize="8pt"
+    	android:gravity="center_vertical|right"
+    	android:layout_gravity="center_vertical|center_horizontal"
+    	android:layout_marginLeft="10pt"
+    	android:layout_width="60pt" 
+    	android:paddingBottom="3pt"
+    	android:layout_height="24pt"
+    	android:layout_below="@+id/calories_burned"/>
+    
+    <TextView 
+    	android:text="-" 
+    	android:id="@+id/calories_left" 
+    	android:textSize="9pt"
+    	android:gravity="center_vertical|center_horizontal"
+    	android:layout_gravity="center_vertical|center_horizontal"
+    	android:layout_marginLeft="10pt"
+    	android:layout_width="80pt" 
+    	android:paddingBottom="3pt"
+    	android:layout_height="24pt"
+    	android:textColor="#0099CC"
+    	android:layout_toRightOf="@+id/calories_left_label"
+    	android:layout_below="@+id/calories_burned"/>
+</RelativeLayout>
