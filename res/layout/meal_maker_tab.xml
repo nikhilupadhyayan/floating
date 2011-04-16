@@ -17,6 +17,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="10pt"
         android:layout_marginRight="10pt"
+        android:layout_centerHorizontal="true"
         android:layout_marginBottom="5pt"
         android:text="Enter food name here"
         android:layout_below="@id/title"/>
