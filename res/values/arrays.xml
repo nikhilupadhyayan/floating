@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string-array name="tracking_mechanism">
+		<item name="1">GPS</item>
+		<item name="2">Cellular Network</item>
+	</string-array>
+	<string-array name="tracking_mechanism_values">
+		<item name="1">1</item>
+		<item name="2">2</item>
+	</string-array>
+	
+	<string-array name="tracking_accuracy">
+		<item name="1">None</item>
+		<item name="2">Medium</item>
+		<item name="3">Tight</item>
+	</string-array>
+	<string-array name="tracking_accuracy_values">
+		<item name="1">1</item>
+		<item name="2">2</item>
+		<item name="2">3</item>
+	</string-array>
+</resources>

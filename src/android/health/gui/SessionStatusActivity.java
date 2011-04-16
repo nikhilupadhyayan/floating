@@ -15,6 +15,8 @@ import android.health.pedometer.ExcerciseSessionList;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnKeyListener;
@@ -60,6 +62,18 @@ public class SessionStatusActivity extends Activity {
         }
         thisSession = sessionList.addSession(exerciseType, false);
         timer.start();
+	}
+	public boolean onCreateOptionsMenu(Menu menu) {
+		menu.add(Menu.NONE, 0, 0, "Preferences");
+		return super.onCreateOptionsMenu(menu);
+	}
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch(item.getItemId()) {
+		case 0:
+			startActivity(new Intent(this, Preferences.class));
+			return true;
+		}
+		return false;
 	}
 	
 	public void stopMonitoring(){
