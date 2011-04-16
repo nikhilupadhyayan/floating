@@ -31,14 +31,13 @@
     	android:layout_marginRight="15pt"
     	android:layout_marginBottom="20pt"
     	android:layout_below="@id/date_display_logger"/>
-    <TextView
+    <Button
     	android:text="Add Meal"
-    	android:id="@+id/add_meal"
+    	android:id="@+id/button_add_meal"
     	android:textSize="8pt"
-    	android:layout_width="fill_parent"
+    	android:layout_width="wrap_content"
     	android:layout_height="wrap_content"
-    	android:layout_marginLeft="15pt"
-    	android:layout_marginRight="15pt"
+    	android:layout_centerHorizontal="true"
     	android:layout_marginBottom="20pt"
     	android:textColor="#0000aa"
     	android:layout_below="@id/meal_list"/>
@@ -49,7 +48,7 @@
     	android:layout_width="fill_parent"
     	android:layout_height="wrap_content"
     	android:layout_marginLeft="4pt"
-    	android:layout_below="@id/add_meal"/>
+    	android:layout_below="@id/button_add_meal"/>
     <TextView
     	android:text="0"
     	android:id="@+id/total_calories_logger_number"
@@ -59,7 +58,7 @@
     	android:layout_marginRight="4pt"
     	android:layout_alignParentRight="true"
     	android:textColor="#aa0000"
-    	android:layout_below="@id/add_meal"/>
+    	android:layout_below="@id/button_add_meal"/>
     <Button 
     	android:text="Back" 
     	android:id="@+id/button_back_logger" 

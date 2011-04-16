@@ -6,12 +6,12 @@
     android:layout_weight="1">
     <TextView
         android:id="@+id/title"
-        android:layout_width="fill_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Daily Calorie Summary"
         android:textSize="9pt" 
-        android:paddingLeft="14pt"
-        android:paddingBottom="3pt"/>
+        android:paddingBottom="3pt" 
+        android:layout_centerHorizontal="true"/>
     <TextView android:id="@+id/display_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -97,5 +97,5 @@
     	android:layout_width="50pt" 
     	android:layout_height="38pt" 
     	android:layout_alignParentBottom="true" 
-    	android:layout_marginLeft="35pt"/>
+    	android:layout_centerHorizontal="true"/>
 </RelativeLayout>

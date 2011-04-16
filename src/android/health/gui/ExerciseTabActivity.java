@@ -19,6 +19,7 @@ public class ExerciseTabActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.exercise_tab);
+        TabSelector.currentTab = 2;
         
         final Button button_stat = (Button) findViewById(R.id.button_stat);
         button_stat.setOnClickListener(new OnClickListener() {

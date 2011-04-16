@@ -31,6 +31,15 @@ public class MealLoggerActivity extends Activity {
                 
             }
         });
+        final Button button_add_meal = (Button) findViewById(R.id.button_add_meal);
+        button_add_meal.setOnClickListener(new OnClickListener() {
+            public void onClick(View v) {
+                // Perform action on clicks
+            	Intent intent = new Intent().setClass(MealLoggerActivity.this, MealMakerActivity.class);
+            	startActivity(intent);
+                
+            }
+        });
         myDisplayDate = (TextView) findViewById(R.id.date_display_logger);
         
         myDisplayDate.setText(

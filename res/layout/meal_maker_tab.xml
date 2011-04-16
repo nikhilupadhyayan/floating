@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="fill_parent"
+  android:layout_height="fill_parent">
+  <TextView 
+    	android:text="Meal Maker" 
+    	android:id="@+id/title" 
+    	android:textSize="10pt"
+    	android:layout_width="wrap_content" 
+    	android:paddingBottom="20pt"
+    	android:layout_height="wrap_content"
+    	android:layout_centerHorizontal="true"/>
+  <EditText
+        android:id="@+id/meal_name"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10pt"
+        android:layout_marginRight="10pt"
+        android:layout_marginBottom="5pt"
+        android:text="Enter food name here"
+        android:layout_below="@id/title"/>
+  <Button 
+    	android:text="Back" 
+    	android:id="@+id/button_back_maker" 
+    	android:layout_width="wrap_content" 
+    	android:layout_height="wrap_content" 
+    	android:layout_alignParentBottom="true" 
+    	android:layout_centerHorizontal="true"/>
+</RelativeLayout>

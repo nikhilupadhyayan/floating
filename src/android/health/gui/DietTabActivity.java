@@ -31,6 +31,7 @@ public class DietTabActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.diet_tab);
+        TabSelector.currentTab = 1;
         
      // capture our View elements
         myDisplayDate = (TextView) findViewById(R.id.display_date);
