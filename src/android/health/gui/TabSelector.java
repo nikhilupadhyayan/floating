@@ -15,7 +15,7 @@ import android.widget.TabHost;
 
 public class TabSelector extends TabActivity {
     /** Called when the activity is first created. */
-    @Override
+    static int currentTab = 0;
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
@@ -47,6 +47,6 @@ public class TabSelector extends TabActivity {
                       .setContent(intent);
         tabHost.addTab(spec);
 
-        tabHost.setCurrentTab(0);
+        tabHost.setCurrentTab(currentTab);
     }
 }

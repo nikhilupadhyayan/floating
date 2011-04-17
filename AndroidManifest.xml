@@ -22,6 +22,8 @@
         <activity android:name="android.health.gui.ExerciseStatisticsActivity" android:screenOrientation="portrait"></activity>
         <activity android:name="android.health.gui.NewExerciseSessionActivity" android:screenOrientation="portrait"></activity>
 		<activity android:name="android.health.gui.SessionStatusActivity" android:screenOrientation="portrait"></activity>
+		<activity android:name="android.health.gui.MealMakerActivity" android:screenOrientation="portrait"></activity>
+		<activity android:name="android.health.gui.Preferences" android:screenOrientation="portrait"></activity>
 			<intent-filter>
 				 <action android:name="android.intent.action.MAIN"/>
 		 		 <category android:name="android.intent.category.LAUNCHER"/>

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+	xmlns:android="http://schemas.android.com/apk/res/android">
+	<PreferenceCategory
+		android:title="Pedometer Options">
+		<EditTextPreference
+		    android:summary="Percentage"
+		    android:defaultValue="Enter whole number (1-100)"
+		    android:title="Step Detection Sensitivity"
+		    android:key="stepSensitivity" />
+		<EditTextPreference
+		    android:summary="In centimeters"
+		    android:defaultValue="Enter number in cm"
+		    android:title="Step Length"
+		    android:key="stepLength" />
+		<CheckBoxPreference
+			android:title="Keep Screen On"
+			android:defaultValue="false"
+			android:summary="Keeps screen on when exercising. Needed for accuracy on some phones (drains battery)"
+			android:key="screenCheck" />
+		<ListPreference
+			android:title="Tracking Mechanism"
+			android:summary="Chooses how to track your location"
+			android:defaultValue="1"
+			android:entries="@array/tracking_mechanism"
+			android:entryValues="@array/tracking_mechanism_values"
+			android:key="trackingMechanism"/>
+		<EditTextPreference
+		    android:summary="Chooses how long to update in seconds"
+		    android:defaultValue="Enter whole number (no decimals)"
+		    android:title="Location Update Interval"
+		    android:key="updateInterval" />
+		<ListPreference
+			android:title="Tracking Accuracy"
+			android:summary="Chooses how tightly the app tracks your location"
+			android:defaultValue="2"
+			android:entries="@array/tracking_accuracy"
+			android:entryValues="@array/tracking_accuracy_values"
+			android:key="trackingAccuracy"/>
+	</PreferenceCategory>
+	<PreferenceCategory
+    	android:title="Health Manager Options">
+		<EditTextPreference
+		    android:summary="In kilograms"
+		    android:defaultValue="Enter whole number (no decimals)"
+		    android:title="Body Weight"
+		    android:key="bodyWeight" />
+		<EditTextPreference
+		    android:summary="Percentage of calories you wish to be burned during exercise"
+		    android:defaultValue="Enter whole number (1-100)"
+		    android:title="Calorie Percentage"
+		    android:key="caloriePercentage" />
+	</PreferenceCategory>
+</PreferenceScreen>

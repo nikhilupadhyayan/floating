@@ -7,14 +7,15 @@
     	android:text="New Exercise Session" 
     	android:id="@+id/title" 
     	android:textSize="10pt"
-    	android:layout_marginLeft="21pt"
     	android:layout_width="wrap_content" 
     	android:paddingBottom="10pt"
-    	android:layout_height="wrap_content"/>
+    	android:layout_height="wrap_content"
+    	android:layout_centerHorizontal="true"/>
     <EditText
         android:id="@+id/title_edit"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
         android:layout_marginLeft="10pt"
         android:layout_marginRight="10pt"
         android:layout_marginBottom="5pt"
@@ -24,7 +25,7 @@
     	android:text="Exercise Type:" 
     	android:id="@+id/exercise_type" 
     	android:textSize="7pt"
-    	android:layout_marginLeft="40pt"
+    	android:layout_centerHorizontal="true"
     	android:layout_width="wrap_content" 
     	android:paddingBottom="4pt"
     	android:layout_height="wrap_content"
@@ -35,7 +36,7 @@
     	android:id="@+id/radio_type"
     	android:orientation="horizontal"
     	android:layout_below="@id/exercise_type"
-    	android:layout_marginLeft="4pt"
+    	android:layout_centerHorizontal="true"
     	android:layout_marginBottom="7pt">
     	<RadioButton android:id="@+id/radio_running"
     		android:checked="true"
@@ -56,7 +57,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/radio_type"
-        android:paddingBottom="15pt"
         android:text="Limit Duration" />
     <TextView 
     	android:text="Number Counter" 
@@ -64,34 +64,53 @@
     	android:textSize="7pt"
     	android:layout_alignParentRight="true"
     	android:layout_width="wrap_content" 
-    	android:paddingTop="4pt"
-    	android:paddingBottom="15pt"
+    	android:paddingTop="6pt"
+    	android:layout_alignTop="@id/check_limit"
     	android:layout_height="wrap_content"
     	android:layout_below="@id/radio_type"/>
+    <RadioGroup
+    	android:layout_width="wrap_content"
+    	android:layout_height="wrap_content"
+    	android:id="@+id/radio_counter_type"
+    	android:orientation="horizontal"
+    	android:layout_below="@id/check_limit"
+    	android:layout_centerHorizontal="true"
+    	android:layout_marginTop="5pt"
+    	android:layout_marginBottom="7pt">
+    	<RadioButton android:id="@+id/radio_accel"
+    		android:checked="true"
+        	android:layout_width="wrap_content"
+        	android:layout_height="wrap_content"
+        	android:text="Accelerometer   " />
+     	<RadioButton android:id="@+id/radio_gps"
+        	android:layout_width="wrap_content"
+        	android:layout_height="wrap_content"
+        	android:text="GPS   " />
+    </RadioGroup>
     <TextView 
     	android:text="Health Coach Recommendations" 
-    	android:id="@+id/health_coach_recommendations" 
+    	android:id="@+id/health_recommend" 
     	android:textSize="8pt"
     	android:layout_width="wrap_content" 
-    	android:paddingBottom="30pt"
-    	android:paddingLeft="4pt"
+    	android:paddingTop="5pt"
+    	android:layout_centerHorizontal="true"
     	android:layout_height="wrap_content"
-    	android:layout_below="@id/check_limit"/>
+    	android:layout_below="@id/radio_counter_type"/>
     <Button 
     	android:text="I'm going" 
     	android:id="@+id/button_new_session" 
     	android:layout_width="60pt" 
     	android:layout_height="25pt" 
     	android:layout_marginLeft="4pt"
-    	android:layout_below="@id/health_coach_recommendations" />
+    	android:layout_alignParentBottom="true"/>
     
     <Button 
     	android:text="Not now" 
     	android:id="@+id/button_cancel_session" 
     	android:layout_width="60pt" 
     	android:layout_height="25pt" 
-    	android:layout_toRightOf="@+id/button_new_session"
-    	android:layout_marginLeft="22pt"
-    	android:layout_below="@id/health_coach_recommendations"/>
+    	android:layout_marginRight="4pt"
+    	android:layout_alignParentBottom="true"
+    	android:layout_alignParentRight="true"/>
     
 </RelativeLayout>
