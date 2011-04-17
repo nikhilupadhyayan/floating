@@ -14,6 +14,7 @@ import android.health.pedometer.ExcerciseSession;
 import android.health.pedometer.ExcerciseSessionList;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -35,6 +36,7 @@ public class SessionStatusActivity extends Activity {
 	private TextView titleLabel;
 	private ExcerciseSessionList sessionList = new ExcerciseSessionList(SessionStatusActivity.this);
 	private ExcerciseSession thisSession;
+	private int caloriesLeft = 0;
 	public Handler mHandler = new Handler();
 	
 	public void onCreate(Bundle savedInstanceState) {
@@ -59,7 +61,11 @@ public class SessionStatusActivity extends Activity {
         	travelType.setText("Biking");
         }
         thisSession = sessionList.addSession(exerciseType, false);
-        timer.start();
+        startTimer();
+	}
+	
+	public void startTimer(){
+		timer.start();
 	}
 	
 	public void stopMonitoring(){
@@ -67,8 +73,21 @@ public class SessionStatusActivity extends Activity {
 		timer.stop();
 	}
 	
+	@Overide
+	public void onBackPressed() {
+		stopMonitoring();
+		this.finish();
+	   return;
+	}
+
+	
 	public void updateValues(int distance){
+		int calories = thisSession.getMyCalories();
+		Log.i("SessionStatus", "Received calories = " + calories);
 		distanceLabel.setText("" + (float)(distance / 100.0) + "m");
+		caloriesLabel.setText("" + calories + "");
+		caloriesLeft -= calories < caloriesLeft ? calories : caloriesLeft;
+		caloriesLeftLabel.setText("" + caloriesLeft);
 	}
 
 }

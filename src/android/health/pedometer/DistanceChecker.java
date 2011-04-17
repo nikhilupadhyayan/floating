@@ -1,7 +1,12 @@
 package android.health.pedometer;
 
+import android.os.Handler;
 import android.os.IBinder;
+import android.os.Message;
+import android.os.Messenger;
+import android.os.RemoteException;
 import android.util.Log;
+import android.widget.Toast;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.Context;
@@ -23,10 +28,37 @@ public class DistanceChecker implements DistanceNotifier.Listener{
 	private int distanceTraveled = 0;
 	private static SessionStatusActivity callingActivity;
 	private static StepService mService;
+	private static Messenger mGPSService;
 	private static DistanceChecker currentChecker = null;
 	private static boolean serviceRunning = false;
+	private static boolean gpsRunning = false;
 	private static DistanceCheckerListener theListener = null;
 	
+	/**
+     * Handler to manage communication with the gps monitoring service
+     */
+    class IncomingHandler extends Handler {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case DistanceService.MSG_UPDATE_DISTANCE:
+                    accessDistance(true, msg.arg1);
+                    final int theDistance = msg.arg1;
+                    callingActivity.mHandler.post(new Runnable(){
+						@Override
+						public void run() {
+							callingActivity.updateValues(theDistance);
+						}
+                    });
+                    break;
+                default:
+                    super.handleMessage(msg);
+            }
+        }
+    }
+
+    final Messenger mMessenger = new Messenger(new IncomingHandler());
+
 	//This listener interface simply allows other objects to know when monitoring ends
 	/**
 	 * This simple interface simply forms a mechanism for {@link DistanceChecker} to update
@@ -55,9 +87,7 @@ public class DistanceChecker implements DistanceNotifier.Listener{
         	Log.i("ICallback", "Callback called: " + value);
         	final int convertedValue = (int)(value);
         	currentChecker.accessDistance(true, convertedValue);
-        	if(theListener != null){
-        		theListener.updateDistance(convertedValue);
-        	}
+        	
         	
         	callingActivity.mHandler.post(new Runnable(){
 				@Override
@@ -73,7 +103,6 @@ public class DistanceChecker implements DistanceNotifier.Listener{
         public void onServiceConnected(ComponentName className, IBinder service) {
             mService = ((StepService.StepBinder)service).getService();
             mService.registerCallback(mCallback);
-            //mService.reloadSettings();
         }
 
         public void onServiceDisconnected(ComponentName className) {
@@ -81,6 +110,28 @@ public class DistanceChecker implements DistanceNotifier.Listener{
         }
     };
 	
+    
+    /**
+     * Class for interacting with the main interface of the service.
+     */
+    private ServiceConnection mGPSConnection = new ServiceConnection() {
+        public void onServiceConnected(ComponentName className, IBinder service) {
+        	mGPSService = new Messenger(service);
+            
+            try {
+                Message msg = Message.obtain(null, DistanceService.MSG_REGISTER_CHECKER, this.hashCode(), 0);
+                msg.replyTo = mMessenger;
+                mGPSService.send(msg);
+            } catch (RemoteException e) {
+            	
+            }
+        }
+
+        public void onServiceDisconnected(ComponentName className) {
+        	mGPSService = null;
+        }
+    };
+    
     /**
      * Constructs a new DistanceChecker object. <b>Note:</b> Only one DistanceChecker remains
      * active at a time, creating a second one will stop and remove the first. You must finish
@@ -97,13 +148,17 @@ public class DistanceChecker implements DistanceNotifier.Listener{
 		
 		callingActivity = (SessionStatusActivity)theActivity;
 		currentChecker = this;
+		
 	}
 	
 	/**
 	 * Initialize and utilize the GPS sensors to estimate the distance traveled by the
 	 * user.
 	 */
-	public static void useGPS(){
+	public void useGPS(){
+		//This calls the GPS service and registers itelf with the service
+		 callingActivity.bindService(new Intent(callingActivity, DistanceService.class), mGPSConnection, Context.BIND_AUTO_CREATE);
+		 Toast.makeText(callingActivity, "GPS/Sensor Monitoring Service Started", Toast.LENGTH_SHORT);
 		
 	}
 	
@@ -111,7 +166,7 @@ public class DistanceChecker implements DistanceNotifier.Listener{
 	 * Initialize and utilize the built-in accelerometer to estimate the distance traveled by the
 	 * user.
 	 */
-	public static void useAccel(){
+	public void useAccel(){
 		//Initialize and bind the step monitoring service
 		if (!serviceRunning){
 			Context myContext = callingActivity.getApplicationContext();
@@ -119,7 +174,7 @@ public class DistanceChecker implements DistanceNotifier.Listener{
 			serviceRunning = true;
 			Log.i("DistanceChecker", "Step Monitoring Service Started");
 		}
-		callingActivity.bindService(new Intent(callingActivity, StepService.class), mConnection, Context.BIND_AUTO_CREATE + Context.BIND_DEBUG_UNBIND);
+		callingActivity.bindService(new Intent(callingActivity, StepService.class), mConnection, Context.BIND_AUTO_CREATE);
 		Log.i("DistanceChecker", "Bound to Step Monitoring Service");
 		
 	}
@@ -148,15 +203,21 @@ public class DistanceChecker implements DistanceNotifier.Listener{
 	 * monitoring services and clean up all the related data.
 	 */
 	public void stopMonitoring(){
-		//Unbind and stop the step monitoring service
-		Context myContext = callingActivity.getApplicationContext();
-		callingActivity.unbindService(mConnection);
-		Log.i("DistanceChecker", "Unbound from Step Monitoring Service");
-		
-		myContext.stopService(new Intent(callingActivity,StepService.class));
-		Log.i("DistanceChecker", "Step Monitoring Service Stopped");
-		serviceRunning = false;
-		theListener.onMonitoringEnd(accessDistance(false, 0));
+		if (serviceRunning) {
+			// Unbind and stop the step monitoring service
+			Context myContext = callingActivity.getApplicationContext();
+			//callingActivity.unbindService(mConnection);
+			//Log.i("DistanceChecker", "Unbound from Step Monitoring Service");
+
+			//myContext.stopService(new Intent(callingActivity, StepService.class));
+			//Log.i("DistanceChecker", "Step Monitoring Service Stopped");
+			serviceRunning = false;
+			theListener.onMonitoringEnd(accessDistance(false, 0));
+			Toast.makeText(callingActivity, "Step Monitoring Service Stopped", Toast.LENGTH_SHORT);
+		}else if (gpsRunning){
+			theListener.onMonitoringEnd(accessDistance(false, 0));
+			Toast.makeText(callingActivity, "GPS/Sensor Monitoring Service Stopped", Toast.LENGTH_SHORT);
+		}
 	}
 
 	@Override
@@ -175,11 +236,14 @@ public class DistanceChecker implements DistanceNotifier.Listener{
 	 */
 	private synchronized int accessDistance(boolean isChange, int newValue){
 		distanceTraveled = isChange ? newValue : distanceTraveled;
+		if(isChange && theListener != null){
+			theListener.updateDistance(newValue);
+		}
+		
 		return distanceTraveled;
 	}
 
 	@Override
 	public void passValue() {
-		//TODO Remove this method, it isn't necessary
 	}
 }

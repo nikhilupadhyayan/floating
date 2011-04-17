@@ -56,8 +56,7 @@ public class ExcerciseSession {
 	 * @return The estimated number of calories burned during this information session.
 	 */
 	public int getMyCalories(){
-		calories = calories == 0 ? getCalories(theInfo) : calories;
-		return calories;
+		return theInfo.getCalories();
 	}
 	
 	/**

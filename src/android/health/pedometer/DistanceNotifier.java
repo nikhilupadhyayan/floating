@@ -30,12 +30,13 @@ public class DistanceNotifier implements StepListener{
         public void passValue();
     }
     private Listener mListener;
+    private final long MIN_STEP_THRESHOLD = 150;
+    private long lastStepTime = 0;
     
     float mDistance = 0;
     
-    //TODO: Build in the preference accessing
     boolean mIsMetric = true;
-    float mStepLength = 45;
+    float mStepLength = 90;
 
     public DistanceNotifier(Listener listener) {
         mListener = listener;
@@ -64,8 +65,12 @@ public class DistanceNotifier implements StepListener{
                 mStepLength // inches
                 / 63360.0); // inches/mile
         }
-        
-        notifyListener();
+        if(System.currentTimeMillis() - lastStepTime < MIN_STEP_THRESHOLD){
+        	mDistance -= mStepLength;
+        }else{
+        	notifyListener();
+        }
+        lastStepTime = System.currentTimeMillis();
     }
     
     private void notifyListener() {

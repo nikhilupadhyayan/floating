@@ -18,56 +18,37 @@
 
 package android.health.pedometer;
 
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.app.Service;
 import android.content.BroadcastReceiver;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
-import android.health.manager.R;
 import android.os.Binder;
 import android.os.IBinder;
 import android.os.PowerManager;
 import android.preference.PreferenceManager;
-import android.util.Log;
-import android.widget.Toast;
 
 /**
- * This is an example of implementing an application service that runs locally
- * in the same process as the application.  The {@link StepServiceController}
- * and {@link StepServiceBinding} classes show how to interact with the
- * service.
- *
- * <p>Notice the use of the {@link NotificationManager} when interesting things
- * happen in the service.  This is generally how background services should
- * interact with the user, rather than doing something more disruptive such as
- * calling startActivity().
+ * This class was originally written by Levante Bagi as part of the open source
+ * Pedometer app for Android <TODO: insert GitHub link here>
+ * 
+ * This class has been significantly stripped down and optimized for use in the
+ * open source Health Manager app for Android by Joel Botner
  */
 public class StepService extends Service {
-	private static final String TAG = "android.health.pedometer.StepService";
+	private String TAG = "android.health.pedometer.StepService";
     private SharedPreferences mSettings;
     private SharedPreferences mState;
-    private SharedPreferences.Editor mStateEditor;
     private SensorManager mSensorManager;
     private Sensor mSensor;
     private StepDetector mStepDetector;
-    // private StepBuzzer mStepBuzzer; // used for debugging
     private DistanceNotifier mDistanceNotifier;
-    
     private PowerManager.WakeLock wakeLock;
-    private NotificationManager mNM;
 
-    private int mSteps;
-    private int mPace;
     private float mDistance;
-    private float mSpeed;
-    private float mCalories;
     
     /**
      * Class for clients to access.  Because we know this service always
@@ -82,10 +63,8 @@ public class StepService extends Service {
     
     @Override
     public void onCreate() {
-        Log.i(TAG, "[SERVICE] onCreate");
         super.onCreate();
         
-        mNM = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
         showNotification();
         
         // Load settings
@@ -104,59 +83,30 @@ public class StepService extends Service {
         registerReceiver(mReceiver, filter);
 
         mDistanceNotifier = new DistanceNotifier(mDistanceListener);
-        mDistanceNotifier.setDistance(mDistance = mState.getFloat("distance", 0));
-        mStepDetector.addStepListener(mDistanceNotifier);
-        
-       // Used when debugging:
-        // mStepBuzzer = new StepBuzzer(this);
-        // mStepDetector.addStepListener(mStepBuzzer);
-
-    
-        // Tell the user we started.
-        Toast.makeText(this, "Pedometer Service has started.", Toast.LENGTH_SHORT).show();
+        mStepDetector.addStepListener(mDistanceNotifier);        
     }
     
     @Override
     public void onStart(Intent intent, int startId) {
-        Log.i(TAG, "[SERVICE] onStart");
         super.onStart(intent, startId);
     }
 
     @Override
     public void onDestroy() {
-        Log.i(TAG, "[SERVICE] onDestroy");
-
         // Unregister our receiver.
         unregisterReceiver(mReceiver);
         unregisterDetector();
         
-        mStateEditor = mState.edit();
-        mStateEditor.putInt("steps", mSteps);
-        mStateEditor.putInt("pace", mPace);
-        mStateEditor.putFloat("distance", mDistance);
-        mStateEditor.putFloat("speed", mSpeed);
-        mStateEditor.putFloat("calories", mCalories);
-        mStateEditor.commit();
-        
-        mNM.cancel(R.string.app_name);
-
         wakeLock.release();
         
-        super.onDestroy();
-        
-        // Stop detecting
+        //Stop detecting
         mSensorManager.unregisterListener(mStepDetector);
-
-        // Tell the user we stopped.
-        Toast.makeText(this, "Pedometer Service has stopped", Toast.LENGTH_SHORT).show();
+        super.onDestroy();
     }
 
     private void registerDetector() {
-        mSensor = mSensorManager.getDefaultSensor(
-            Sensor.TYPE_ACCELEROMETER);
-        mSensorManager.registerListener(mStepDetector,
-            mSensor,
-            SensorManager.SENSOR_DELAY_FASTEST);
+        mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        mSensorManager.registerListener(mStepDetector, mSensor, SensorManager.SENSOR_DELAY_FASTEST);
     }
 
     private void unregisterDetector() {
@@ -165,7 +115,6 @@ public class StepService extends Service {
 
     @Override
     public IBinder onBind(Intent intent) {
-        Log.i(TAG, "[SERVICE] onBind");
         return mBinder;
     }
 
@@ -175,32 +124,21 @@ public class StepService extends Service {
     private final IBinder mBinder = new StepBinder();
 
     public interface ICallback {
-        //public void stepsChanged(int value);
-        //public void paceChanged(int value);
         public void distanceChanged(float value);
-        //public void speedChanged(float value);
-        //public void caloriesChanged(float value);
     }
     
     private ICallback mCallback;
 
     public void registerCallback(ICallback cb) {
         mCallback = cb;
-        //mStepDisplayer.passValue();
-        //mPaceListener.passValue();
+        mDistanceNotifier.setDistance(mDistance = mState.getFloat("distance", 0));
     }
     
-    private int mDesiredPace;
-    private float mDesiredSpeed;
-    
-   
-    public void reloadSettings() {
+   public void reloadSettings() {
         mSettings = PreferenceManager.getDefaultSharedPreferences(this);
         
         if (mStepDetector != null) { 
-            mStepDetector.setSensitivity(
-                    Float.valueOf(mSettings.getString("sensitivity", "10"))
-            );
+            mStepDetector.setSensitivity(Float.valueOf(mSettings.getString("sensitivity", "10")));
         }
         
         if (mDistanceNotifier != null) mDistanceNotifier.reloadSettings();
@@ -229,21 +167,6 @@ public class StepService extends Service {
      * Show a notification while this service is running.
      */
     private void showNotification() {
-    	//TODO: Add the constant notification to the user's notification shade
-    	
-        /*CharSequence text = getText(R.string.app_name);
-        Notification notification = new Notification(R.drawable.ic_notification, null,
-                System.currentTimeMillis());
-        notification.flags = Notification.FLAG_NO_CLEAR | Notification.FLAG_ONGOING_EVENT;
-        Intent pedometerIntent = new Intent();
-        pedometerIntent.setComponent(new ComponentName(this, Pedometer.class));
-        pedometerIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
-                pedometerIntent, 0);
-        notification.setLatestEventInfo(this, text,
-                getText(R.string.notification_subtitle), contentIntent);
-
-        mNM.notify(R.string.app_name, notification);*/
     }
 
 
