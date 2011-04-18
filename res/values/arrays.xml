@@ -2,7 +2,7 @@
 <resources>
 	<string-array name="tracking_mechanism">
 		<item name="1">GPS</item>
-		<item name="2">Cellular Network</item>
+		<item name="2">Wireless Networks</item>
 	</string-array>
 	<string-array name="tracking_mechanism_values">
 		<item name="1">1</item>

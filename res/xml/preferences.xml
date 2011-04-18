@@ -4,19 +4,21 @@
 	<PreferenceCategory
 		android:title="Pedometer Options">
 		<EditTextPreference
-		    android:summary="Percentage"
-		    android:defaultValue="Enter whole number (1-100)"
+		    android:summary="Percentage of default value"
+		    android:defaultValue="100"
 		    android:title="Step Detection Sensitivity"
+		    android:inputType="number"
 		    android:key="stepSensitivity" />
 		<EditTextPreference
-		    android:summary="In centimeters"
-		    android:defaultValue="Enter number in cm"
+		    android:summary="The length of your steps when exercising"
+		    android:defaultValue="60"
 		    android:title="Step Length"
+		    android:inputType="number"
 		    android:key="stepLength" />
 		<CheckBoxPreference
 			android:title="Keep Screen On"
 			android:defaultValue="false"
-			android:summary="Keeps screen on when exercising. Needed for accuracy on some phones (drains battery)"
+			android:summary="Use only if accelerometer stops when screen turns off (some HTC phones)"
 			android:key="screenCheck" />
 		<ListPreference
 			android:title="Tracking Mechanism"
@@ -26,13 +28,14 @@
 			android:entryValues="@array/tracking_mechanism_values"
 			android:key="trackingMechanism"/>
 		<EditTextPreference
-		    android:summary="Chooses how long to update in seconds"
-		    android:defaultValue="Enter whole number (no decimals)"
+		    android:summary="Choose frequency of location-based distance updates"
+		    android:defaultValue="6"
 		    android:title="Location Update Interval"
+		    android:inputType="number"
 		    android:key="updateInterval" />
 		<ListPreference
 			android:title="Tracking Accuracy"
-			android:summary="Chooses how tightly the app tracks your location"
+			android:summary="Choose how tightly the app tracks your location"
 			android:defaultValue="2"
 			android:entries="@array/tracking_accuracy"
 			android:entryValues="@array/tracking_accuracy_values"
@@ -42,13 +45,15 @@
     	android:title="Health Manager Options">
 		<EditTextPreference
 		    android:summary="In kilograms"
-		    android:defaultValue="Enter whole number (no decimals)"
+		    android:defaultValue="70"
 		    android:title="Body Weight"
+		    android:inputType="number"
 		    android:key="bodyWeight" />
 		<EditTextPreference
 		    android:summary="Percentage of calories you wish to be burned during exercise"
-		    android:defaultValue="Enter whole number (1-100)"
+		    android:defaultValue="30"
 		    android:title="Calorie Percentage"
+		    android:inputType="number"
 		    android:key="caloriePercentage" />
 	</PreferenceCategory>
 </PreferenceScreen>

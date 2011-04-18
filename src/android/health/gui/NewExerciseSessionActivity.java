@@ -8,9 +8,18 @@ package android.health.gui;
  */
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.health.manager.R;
+import android.location.LocationManager;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.provider.Settings;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -18,6 +27,8 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnKeyListener;
 import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.Toast;
@@ -26,6 +37,9 @@ public class NewExerciseSessionActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.new_exercise_session_tab);
+        final SharedPreferences mSettings = PreferenceManager.getDefaultSharedPreferences(this);
+        final LocationManager manager = (LocationManager) getSystemService( Context.LOCATION_SERVICE );
+
         
         //Handle the back button listener here
         /*final Button button_back_new_session = (Button) findViewById(R.id.button_back_new_session);
@@ -66,7 +80,68 @@ public class NewExerciseSessionActivity extends Activity {
         //Set up the RadioButton listeners
         final RadioButton runButton = (RadioButton)findViewById(R.id.radio_running);
         final RadioButton walkButton = (RadioButton)findViewById(R.id.radio_walking);
-        final RadioButton bikeButton = (RadioButton)findViewById(R.id.radio_biking);        
+        final RadioButton bikeButton = (RadioButton)findViewById(R.id.radio_biking);
+        final RadioButton gpsButton = (RadioButton)findViewById(R.id.radio_gps);
+        final RadioButton accelButton = (RadioButton)findViewById(R.id.radio_accel);
+        
+        //Set the button listeners so Bike mode will only use GPS/Network
+        bikeButton.setOnCheckedChangeListener(new OnCheckedChangeListener(){
+        @Override
+		public void onCheckedChanged(CompoundButton buttonView,	boolean isChecked) {
+			if (isChecked){
+				gpsButton.setChecked(true);
+				accelButton.setEnabled(false);
+				
+			}
+		}});
+        walkButton.setOnCheckedChangeListener(new OnCheckedChangeListener(){
+            @Override
+    		public void onCheckedChanged(CompoundButton buttonView,	boolean isChecked) {
+    			if (isChecked){
+    				accelButton.setEnabled(true);
+    			}
+    		}});
+        runButton.setOnCheckedChangeListener(new OnCheckedChangeListener(){
+            @Override
+    		public void onCheckedChanged(CompoundButton buttonView,	boolean isChecked) {
+    			if (isChecked){
+    				accelButton.setEnabled(true);
+    			}
+    		}});
+        
+        
+        //This radio button must ensure the Location-monitoring is enabled by the user before proceeding
+        gpsButton.setOnCheckedChangeListener(new OnCheckedChangeListener(){
+            @Override
+    		public void onCheckedChanged(CompoundButton buttonView,	boolean isChecked) {
+            	if(!isChecked){
+            		return;
+            	}
+            	
+    			if (!bikeButton.isChecked()){
+    				accelButton.setEnabled(true);
+    			}
+    			if(Integer.valueOf(mSettings.getString("trackingMechanism", "1")) == 1){
+    				if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER) ) {
+    					accelButton.setEnabled(true);
+    					accelButton.setChecked(true);
+    					if(bikeButton.isChecked()){
+    						runButton.setChecked(true);
+    					}
+    			        buildAlertMessageNoGps("GPS");
+    			    }
+    			}else{
+    				if (!manager.isProviderEnabled(LocationManager.NETWORK_PROVIDER ) ) {
+    					accelButton.setEnabled(true);
+    					accelButton.setChecked(true);
+    					if(bikeButton.isChecked()){
+    						runButton.setChecked(true);
+    					}
+    			        buildAlertMessageNoGps("Wireless Networks Tracking");
+    				}
+    			}	
+    		}
+        });
         
       //Handle the "start session" button listener here
       final Button button_start_session = (Button) findViewById(R.id.button_new_session);
@@ -80,6 +155,7 @@ public class NewExerciseSessionActivity extends Activity {
     		  exerciseType = bikeButton.isChecked() ? 3 : exerciseType;
     		  sessionParameters.putString("Session Title", sessionTitle.getText().toString());
     		  sessionParameters.putInt("Exercise Type", exerciseType);
+    		  sessionParameters.putBoolean("Use GPS", gpsButton.isChecked());
     		  
               // Perform action on clicks
     		  Intent intent = new Intent().setClass(NewExerciseSessionActivity.this, SessionStatusActivity.class);
@@ -102,5 +178,37 @@ public class NewExerciseSessionActivity extends Activity {
 		}
 		return false;
 	}
+	
+	/**
+	 * If the user needs to turn on their location management, this will
+	 * open the necessary dialog to do so.
+	 */
+	private void launchGPSOptions() {
+        final ComponentName toLaunch = new ComponentName("com.android.settings","com.android.settings.SecuritySettings");
+        final Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+        intent.addCategory(Intent.CATEGORY_LAUNCHER);
+        intent.setComponent(toLaunch);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivityForResult(intent, 0);
+    }
+	
+	private void buildAlertMessageNoGps(String type) {
+	    final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+	    builder.setMessage("Your " + type + " seems to be disabled, do you want to enable it?")
+	           .setCancelable(false)
+	           .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+	               public void onClick(@SuppressWarnings("unused") final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
+	                   launchGPSOptions(); 
+	               }
+	           })
+	           .setNegativeButton("No", new DialogInterface.OnClickListener() {
+	               public void onClick(final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
+	                    dialog.cancel();
+	               }
+	           });
+	    final AlertDialog alert = builder.create();
+	    alert.show();
+	}
+
 
 }

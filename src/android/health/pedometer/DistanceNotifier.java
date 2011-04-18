@@ -18,6 +18,10 @@
 
 package android.health.pedometer;
 
+import android.content.Context;
+import android.health.gui.SessionStatusActivity;
+import android.preference.PreferenceManager;
+
 /**
  * Calculates and displays the distance walked.  
  * @author Levente Bagi - original foundation for code
@@ -36,11 +40,10 @@ public class DistanceNotifier implements StepListener{
     float mDistance = 0;
     
     boolean mIsMetric = true;
-    float mStepLength = 90;
+    float mStepLength = Float.valueOf(PreferenceManager.getDefaultSharedPreferences(SessionStatusActivity.me).getString("stepLength", "90"));
 
     public DistanceNotifier(Listener listener) {
         mListener = listener;
-        //TODO: Check the pedometer settings
     }
     public void setDistance(float distance) {
         mDistance = distance;
@@ -48,16 +51,11 @@ public class DistanceNotifier implements StepListener{
     }
     
     public void reloadSettings() {
-        /*mIsMetric = mSettings.isMetric();
-        mStepLength = mSettings.getStepLength();
-        notifyListener();*/
+    	mStepLength = Float.valueOf(PreferenceManager.getDefaultSharedPreferences(SessionStatusActivity.me).getString("stepLength", "90"));
     }
     
     public void onStep() {        
         if (mIsMetric) {
-            //mDistance += (float)(// kilometers
-                //mStepLength // centimeters
-                /// 100.0); // centimeters/kilometer
         	mDistance += mStepLength;
         }
         else {
