@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+     xmlns:android="http://schemas.android.com/apk/res/android"
+     android:paddingTop="4pt"
+     android:paddingBottom="6pt"
+     android:layout_width="fill_parent"
+     android:layout_height="wrap_content"
+     android:orientation="horizontal">
+ 
+     <TextView android:id="@+id/session_name_col"
+         android:layout_width="59pt"
+         android:layout_height="wrap_content"/>
+ 
+     <TextView android:id="@+id/distance_col"
+         android:layout_width="36pt"
+         android:layout_height="wrap_content"/>
+ 
+     <TextView android:id="@+id/calories_burned_col"
+         android:layout_width="36pt"
+         android:layout_height="wrap_content"/>
+</LinearLayout>
