@@ -9,23 +9,31 @@
         android:text="@string/exercise_session"
         android:textSize="10pt"
         android:layout_centerHorizontal="true"
-        android:paddingBottom="7pt"/>
+        android:paddingBottom="1pt"/>
+    <TextView
+    	android:id="@+id/sub_title"
+    	android:layout_height="wrap_content"
+    	android:layout_width="wrap_content"
+    	android:text="(Click on session for more info)"
+    	android:layout_centerHorizontal="true"
+    	android:layout_below="@+id/title"
+    	android:paddingBottom="5pt"/>
     <TextView 
     	android:layout_height="wrap_content" 
     	android:text="Session Name:" 
-    	android:paddingLeft="6pt"
+    	android:paddingLeft="4pt"
     	android:paddingRight="10pt" 
     	android:id="@+id/name" 
     	android:layout_width="wrap_content" 
-    	android:layout_below="@+id/title"/>
+    	android:layout_below="@+id/sub_title"/>
    	<TextView 
    		android:layout_height="wrap_content" 
    		android:text="Cal.Burned:" 
    		android:id="@+id/burned" 
    		android:layout_width="wrap_content" 
-   		android:layout_below="@+id/title" 
+   		android:layout_below="@+id/sub_title" 
    		android:layout_alignParentRight="true" 
-   		android:paddingRight="6pt"/>
+   		android:paddingRight="4pt"/>
     <TextView 
     	android:layout_height="wrap_content" 
     	android:text="Distance:" 
@@ -33,25 +41,11 @@
     	android:id="@+id/distance" 
     	android:layout_width="wrap_content" 
     	android:layout_toLeftOf="@id/burned"
-    	android:layout_below="@+id/title"/>
+    	android:layout_below="@+id/sub_title"/>
    	<ListView 
    		android:layout_height="wrap_content" 
-   		android:layout_width="fill_parent" 
-   		android:id="@+id/exercise_table" 
+   		android:layout_width="wrap_content" 
+   		android:id="@+id/exercise_info_list" 
    		android:layout_below="@+id/name" 
-   		android:layout_alignLeft="@+id/name"/>
-   	<Button 
-   		android:layout_height="36pt" 
-   		android:id="@+id/button_stat" 
-   		android:text="Detailed Statistics" 
-   		android:layout_width="50pt" 
-   		android:layout_alignParentLeft="true" 
-   		android:layout_alignParentBottom="true"/>
-   	<Button 
-   		android:layout_height="36pt" 
-   		android:id="@+id/button_new_session" 
-   		android:text="New Session" 
-   		android:layout_width="50pt" 
-   		android:layout_alignParentRight="true" 
-   		android:layout_alignParentBottom="true"/>
+   		android:paddingLeft="4pt"/>
    	</RelativeLayout>

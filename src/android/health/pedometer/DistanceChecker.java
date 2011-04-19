@@ -1,18 +1,17 @@
 package android.health.pedometer;
 
+import android.app.Activity;
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.content.ServiceConnection;
+import android.health.gui.SessionStatusActivity;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.os.Messenger;
 import android.os.RemoteException;
 import android.util.Log;
-import android.widget.Toast;
-import android.app.Activity;
-import android.content.Intent;
-import android.content.Context;
-import android.content.ServiceConnection;
-import android.content.ComponentName;
-import android.health.gui.SessionStatusActivity;
 
 /**
  * This class is responsible for abstracting all sensor handling away from the rest
