@@ -26,10 +26,12 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
+import android.health.gui.SessionStatusActivity;
 import android.os.Binder;
 import android.os.IBinder;
 import android.os.PowerManager;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 /**
  * This class was originally written by Levante Bagi as part of the open source
@@ -40,7 +42,7 @@ import android.preference.PreferenceManager;
  */
 public class StepService extends Service {
 	private String TAG = "android.health.pedometer.StepService";
-    private SharedPreferences mSettings;
+    private SharedPreferences mSettings = PreferenceManager.getDefaultSharedPreferences(SessionStatusActivity.me);
     private SharedPreferences mState;
     private SensorManager mSensorManager;
     private Sensor mSensor;
@@ -132,13 +134,15 @@ public class StepService extends Service {
     public void registerCallback(ICallback cb) {
         mCallback = cb;
         mDistanceNotifier.setDistance(mDistance = mState.getFloat("distance", 0));
+        acquireWakeLock();
+        reloadSettings();
     }
     
    public void reloadSettings() {
         mSettings = PreferenceManager.getDefaultSharedPreferences(this);
         
         if (mStepDetector != null) { 
-            mStepDetector.setSensitivity(Float.valueOf(mSettings.getString("sensitivity", "10")));
+            mStepDetector.setSensitivity((float) Math.pow((1.0 / ((Float.valueOf(PreferenceManager.getDefaultSharedPreferences(SessionStatusActivity.me).getString("stepSensitivity", "100")) / 10.0))), 1.25));
         }
         
         if (mDistanceNotifier != null) mDistanceNotifier.reloadSettings();
@@ -193,14 +197,14 @@ public class StepService extends Service {
         int wakeFlags;
         /*if (mPedometerSettings.wakeAggressively()) {
             wakeFlags = PowerManager.SCREEN_DIM_WAKE_LOCK | PowerManager.ACQUIRE_CAUSES_WAKEUP;
-        }
-        else if (mPedometerSettings.keepScreenOn()) {
+        }*/
+        if (mSettings.getBoolean("screenCheck", false)) {
             wakeFlags = PowerManager.SCREEN_DIM_WAKE_LOCK;
+            Log.i("StepService", "Dim wakelock enabled");
         }
         else {
             wakeFlags = PowerManager.PARTIAL_WAKE_LOCK;
-        }*/
-        wakeFlags = PowerManager.PARTIAL_WAKE_LOCK;
+        }
         wakeLock = pm.newWakeLock(wakeFlags, TAG);
         wakeLock.acquire();
     }

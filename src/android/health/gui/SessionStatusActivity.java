@@ -14,6 +14,7 @@ import android.health.pedometer.ExcerciseSession;
 import android.health.pedometer.ExcerciseSessionList;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -39,10 +40,12 @@ public class SessionStatusActivity extends Activity {
 	private ExcerciseSessionList sessionList = new ExcerciseSessionList(SessionStatusActivity.this);
 	private ExcerciseSession thisSession;
 	private int caloriesLeft = 0;
+	public static SessionStatusActivity me;
 	public Handler mHandler = new Handler();
 	
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        me = this;
         setContentView(R.layout.session_status);
         Bundle myStuff = this.getIntent().getExtras();
         int exerciseType = myStuff.getInt("Exercise Type");
@@ -62,24 +65,22 @@ public class SessionStatusActivity extends Activity {
         }else if(exerciseType == 3){
         	travelType.setText("Biking");
         }
-        thisSession = sessionList.addSession(exerciseType, false);
-        startTimer();
+        thisSession = sessionList.addSession(exerciseType, myStuff.getBoolean("Use GPS"));
+        if(!myStuff.getBoolean("Use GPS")){
+        	startTimer();
+        }else{
+        	Toast.makeText(this, "Waiting for locational lock...", Toast.LENGTH_SHORT).show();
+        }
+	}
+	
+	public void stopButtonPresser(View theButton){
+		onBackPressed();
 	}
 	
 	public void startTimer(){
+		Toast.makeText(this, "Locational tracking has begun...", Toast.LENGTH_SHORT).show();
+		timer.setBase(SystemClock.elapsedRealtime());
 		timer.start();
-	}
-	public boolean onCreateOptionsMenu(Menu menu) {
-		menu.add(Menu.NONE, 0, 0, "Preferences");
-		return super.onCreateOptionsMenu(menu);
-	}
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch(item.getItemId()) {
-		case 0:
-			startActivity(new Intent(this, Preferences.class));
-			return true;
-		}
-		return false;
 	}
 	
 	public void stopMonitoring(){
@@ -87,7 +88,7 @@ public class SessionStatusActivity extends Activity {
 		timer.stop();
 	}
 	
-	@Overide
+	@Override
 	public void onBackPressed() {
 		stopMonitoring();
 		this.finish();

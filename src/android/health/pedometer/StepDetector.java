@@ -24,6 +24,8 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.health.gui.SessionStatusActivity;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 /**
@@ -34,15 +36,15 @@ import android.util.Log;
 public class StepDetector implements SensorEventListener
 {
     private final static String TAG = "StepDetector";
-    private float   mLimit = 10;
-    private float   mLastValues[] = new float[3*2];
-    private float   mScale[] = new float[2];
-    private float   mYOffset;
-
-    private float   mLastDirections[] = new float[3*2];
-    private float   mLastExtremes[][] = { new float[3*2], new float[3*2] };
-    private float   mLastDiff[] = new float[3*2];
-    private int     mLastMatch = -1;
+    private float mLimit = (float) Math.pow((1.0 / ((Float.valueOf(PreferenceManager.getDefaultSharedPreferences(SessionStatusActivity.me).getString("stepSensitivity", "100")) / 10.0))), 1.25);
+    private float mLastValues[] = new float[3*2];
+    private float mScale[] = new float[2];
+    private float mYOffset;
+    
+    private float mLastDirections[] = new float[3*2];
+    private float mLastExtremes[][] = { new float[3*2], new float[3*2] };
+    private float mLastDiff[] = new float[3*2];
+    private int mLastMatch = -1;
     
     private ArrayList<StepListener> mStepListeners = new ArrayList<StepListener>();
     
@@ -92,7 +94,6 @@ public class StepDetector implements SensorEventListener
                             boolean isNotContra = (mLastMatch != 1 - extType);
                             
                             if (isAlmostAsLargeAsPrevious && isPreviousLargeEnough && isNotContra) {
-                                Log.i(TAG, "step");
                                 for (StepListener stepListener : mStepListeners) {
                                     stepListener.onStep();
                                 }

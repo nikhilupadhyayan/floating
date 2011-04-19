@@ -35,7 +35,7 @@ public class DistanceChecker implements DistanceNotifier.Listener{
 	private static DistanceCheckerListener theListener = null;
 	
 	/**
-     * Handler to manage communication with the gps monitoring service
+     * Handler to manage communication with the GPS/Network monitoring service
      */
     class IncomingHandler extends Handler {
         @Override
@@ -48,6 +48,14 @@ public class DistanceChecker implements DistanceNotifier.Listener{
 						@Override
 						public void run() {
 							callingActivity.updateValues(theDistance);
+						}
+                    });
+                    break;
+                case DistanceService.MSG_LOCK_ACQUIRED:
+                    callingActivity.mHandler.post(new Runnable(){
+						@Override
+						public void run() {
+							callingActivity.startTimer();
 						}
                     });
                     break;
@@ -87,7 +95,6 @@ public class DistanceChecker implements DistanceNotifier.Listener{
         	Log.i("ICallback", "Callback called: " + value);
         	final int convertedValue = (int)(value);
         	currentChecker.accessDistance(true, convertedValue);
-        	
         	
         	callingActivity.mHandler.post(new Runnable(){
 				@Override
@@ -156,10 +163,8 @@ public class DistanceChecker implements DistanceNotifier.Listener{
 	 * user.
 	 */
 	public void useGPS(){
-		//This calls the GPS service and registers itelf with the service
+		//This calls the GPS service and registers itself with the service
 		 callingActivity.bindService(new Intent(callingActivity, DistanceService.class), mGPSConnection, Context.BIND_AUTO_CREATE);
-		 Toast.makeText(callingActivity, "GPS/Sensor Monitoring Service Started", Toast.LENGTH_SHORT);
-		
 	}
 	
 	/**
@@ -206,17 +211,13 @@ public class DistanceChecker implements DistanceNotifier.Listener{
 		if (serviceRunning) {
 			// Unbind and stop the step monitoring service
 			Context myContext = callingActivity.getApplicationContext();
-			//callingActivity.unbindService(mConnection);
-			//Log.i("DistanceChecker", "Unbound from Step Monitoring Service");
-
-			//myContext.stopService(new Intent(callingActivity, StepService.class));
-			//Log.i("DistanceChecker", "Step Monitoring Service Stopped");
 			serviceRunning = false;
 			theListener.onMonitoringEnd(accessDistance(false, 0));
-			Toast.makeText(callingActivity, "Step Monitoring Service Stopped", Toast.LENGTH_SHORT);
+			callingActivity.unbindService(mConnection);
+			mService.stopSelf();
 		}else if (gpsRunning){
 			theListener.onMonitoringEnd(accessDistance(false, 0));
-			Toast.makeText(callingActivity, "GPS/Sensor Monitoring Service Stopped", Toast.LENGTH_SHORT);
+			callingActivity.unbindService(mGPSConnection);
 		}
 	}
 

@@ -85,7 +85,7 @@
      	<RadioButton android:id="@+id/radio_gps"
         	android:layout_width="wrap_content"
         	android:layout_height="wrap_content"
-        	android:text="GPS   " />
+        	android:text="GPS/Network" />
     </RadioGroup>
     <TextView 
     	android:text="Health Coach Recommendations" 
