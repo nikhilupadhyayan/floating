@@ -7,11 +7,15 @@ package android.health.gui;
  * @author Joel Botner
  */
 
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.health.manager.R;
 import android.health.pedometer.ExcerciseSession;
 import android.health.pedometer.ExcerciseSessionList;
+import android.health.pedometer.PedometerDatabaseAdapter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
@@ -37,17 +41,22 @@ public class SessionStatusActivity extends Activity {
 	private TextView caloriesLeftLabel;
 	private TextView travelType;
 	private TextView titleLabel;
-	private ExcerciseSessionList sessionList = new ExcerciseSessionList(SessionStatusActivity.this);
+	private ExcerciseSessionList sessionList;
 	private ExcerciseSession thisSession;
 	private int caloriesLeft = 0;
+	private long startTime;
+	private PedometerDatabaseAdapter theDB;
 	public static SessionStatusActivity me;
 	public Handler mHandler = new Handler();
+	private Bundle myStuff;
 	
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         me = this;
+        theDB = new PedometerDatabaseAdapter(this).open();
+        sessionList = new ExcerciseSessionList(SessionStatusActivity.this, theDB);
         setContentView(R.layout.session_status);
-        Bundle myStuff = this.getIntent().getExtras();
+        myStuff = this.getIntent().getExtras();
         int exerciseType = myStuff.getInt("Exercise Type");
 
         timer = (Chronometer) findViewById(R.id.time_elapsed);
@@ -80,12 +89,17 @@ public class SessionStatusActivity extends Activity {
 	public void startTimer(){
 		Toast.makeText(this, "Locational tracking has begun...", Toast.LENGTH_SHORT).show();
 		timer.setBase(SystemClock.elapsedRealtime());
+		startTime = GregorianCalendar.getInstance().getTimeInMillis();
 		timer.start();
 	}
 	
 	public void stopMonitoring(){
 		thisSession.stopMonitoring();
 		timer.stop();
+		Calendar today = GregorianCalendar.getInstance();
+		today.setTimeInMillis(((long)(today.getTimeInMillis() / 8640000)) * 8640000); //Returns the record to midnight
+		
+		sessionList.monitoringDone(thisSession, myStuff.getString("Session Title"), GregorianCalendar.getInstance().getTimeInMillis() - startTime, startTime);
 	}
 	
 	@Override

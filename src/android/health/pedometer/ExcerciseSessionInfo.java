@@ -1,6 +1,8 @@
 package android.health.pedometer;
 
+import android.health.gui.SessionStatusActivity;
 import android.health.pedometer.DistanceChecker.DistanceCheckerListener;
+import android.preference.PreferenceManager;
 
 /**
  * This class stores the core information about the exercise itself from the
@@ -13,11 +15,11 @@ import android.health.pedometer.DistanceChecker.DistanceCheckerListener;
 public class ExcerciseSessionInfo implements DistanceCheckerListener{
 	/** Specifies whether the user walked, ran, or biked (1, 2, or 3 respectively)*/
 	private int typeOfTravel = 0;
-	private int distanceTraveled = 0; //Distance in hundredths of a mile
+	private int distanceTraveled = 0; //Distance in centimeters
 	private DistanceChecker sensorWatcher;
 	private double calories = 0;
 	private long lastTimeUpdate = System.currentTimeMillis();
-	private double userWeight = 56.7;
+	private double userWeight;
 	
 	/**
 	 * This creates a new ExcerciseSessionInfo to store the important details about the 
@@ -29,8 +31,10 @@ public class ExcerciseSessionInfo implements DistanceCheckerListener{
 	 */
 	public ExcerciseSessionInfo(int travelType, DistanceChecker checker){
 		typeOfTravel = travelType;
-		sensorWatcher = checker;		
+		sensorWatcher = checker;
+		
 		sensorWatcher.registerListener(this);
+		userWeight = Double.valueOf(PreferenceManager.getDefaultSharedPreferences(SessionStatusActivity.me).getString("bodyWeight", "60"));
 	}
 	
 	/**
@@ -46,7 +50,7 @@ public class ExcerciseSessionInfo implements DistanceCheckerListener{
 	 * Returns the current tallied distance traveled as estimated by the
 	 * DistanceChecker.
 	 * 
-	 * @return The current distance traveled in hundredths of a mile.
+	 * @return The current distance traveled in centimeters.
 	 */
 	public int getDistance(){
 		return accessDistance(false, 0);
@@ -160,7 +164,7 @@ public class ExcerciseSessionInfo implements DistanceCheckerListener{
 		}
 		return (int)calories;
 	}
-
+	
 	public int getCalories() {
 		return accessCalories(false, 0);
 	}

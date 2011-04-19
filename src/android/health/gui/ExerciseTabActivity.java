@@ -11,7 +11,9 @@ import java.util.HashMap;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.database.Cursor;
 import android.health.manager.R;
+import android.health.pedometer.PedometerDatabaseAdapter;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -20,17 +22,24 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.SimpleCursorAdapter;
 
 public class ExerciseTabActivity extends Activity {
+	
+	private Cursor allEntries;
+	private SimpleCursorAdapter info_adapter;
+	private ListView exercise_info_list;
+	private PedometerDatabaseAdapter theDB;
 	
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.exercise_tab);
         TabSelector.currentTab = 2;
+        theDB = new PedometerDatabaseAdapter(this).open();
         
-        ListView exercise_info_list = (ListView) findViewById(R.id.exercise_info_list);
+        exercise_info_list = (ListView) findViewById(R.id.exercise_info_list);
         
-        ArrayList<HashMap<String, String>> mylist = new ArrayList<HashMap<String, String>>();
+        /*ArrayList<HashMap<String, String>> mylist = new ArrayList<HashMap<String, String>>();
         HashMap<String, String> map = new HashMap<String, String>();
         String columnTitle1 = "name";
         String columnTitle2 = "dist";
@@ -51,13 +60,19 @@ public class ExerciseTabActivity extends Activity {
         // etc.
         
         SimpleAdapter info_adapter = new SimpleAdapter(this, mylist, R.layout.exercise_info_row,
-                    new String[] {columnTitle1, columnTitle2, columnTitle3}, new int[] {R.id.session_name_col, R.id.distance_col, R.id.calories_burned_col});
+                    new String[] {columnTitle1, columnTitle2, columnTitle3}, new int[] {R.id.session_name_col, R.id.distance_col, R.id.calories_burned_col});*/
+        
+        
+        allEntries = theDB.fetchAllSessions();
+        info_adapter = new SimpleCursorAdapter(this, R.layout.exercise_info_row, allEntries,
+                    new String[] {PedometerDatabaseAdapter.KEY_TITLE, PedometerDatabaseAdapter.KEY_DISTANCE, PedometerDatabaseAdapter.KEY_CALORIES}, new int[] {R.id.session_name_col, R.id.distance_col, R.id.calories_burned_col});
         exercise_info_list.setAdapter(info_adapter);
         
         exercise_info_list.setOnItemClickListener(new OnItemClickListener() {
         	 
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            	//TODO: Add the Bundle with the embedded id
             	Intent intent = new Intent(ExerciseTabActivity.this, ExerciseStatisticsActivity.class);
             	startActivity(intent);
             }
@@ -80,4 +95,11 @@ public class ExerciseTabActivity extends Activity {
 		return false;
 	}
 	
+	protected void onResume(){
+		super.onResume();
+		
+		allEntries = theDB.fetchAllSessions();
+		info_adapter.changeCursor(allEntries);
+		info_adapter.notifyDataSetChanged();
+	}
 }

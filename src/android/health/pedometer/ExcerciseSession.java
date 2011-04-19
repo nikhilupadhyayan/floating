@@ -11,10 +11,6 @@ import android.app.Activity;
  */
 public class ExcerciseSession {
 
-	/** Stores the date of the exercise session with the session number concatenated to the end
-	    * e.g. "4-4-2011" + " 3" for the third session on April 4th, 2011*/
-	private String date;
-	private int calories = 0;
 	private DistanceChecker theChecker;
 	private ExcerciseSessionInfo theInfo;
 	
@@ -26,7 +22,7 @@ public class ExcerciseSession {
 	 * @return The estimated number of calories burned during the exercise session.
 	 */
 	public static int getCalories(ExcerciseSessionInfo info){
-		//TODO: Calorie calculating equations		
+		info.getCalories();
 		return 0;
 	}
 	
@@ -60,9 +56,36 @@ public class ExcerciseSession {
 	}
 	
 	/**
+	 * Returns the currently tallied distance traveled (in meters).
+	 * 
+	 * @return The current estimate of meters traveled.
+	 */
+	public double getDistance(){
+		return (double)(theInfo.getDistance() / 100.0);
+	}
+	
+	/**
+	 * Returns the type of travel for this session (string form for readability)
+	 * 
+	 * @return A string saying what type of exercise this session represented.
+	 */
+	public String getTypeOfTravel(){
+		if(theInfo.getTravel() == 1){
+			return "Walking";
+		}
+		else if(theInfo.getTravel() == 2){
+			return "Running";
+		}
+		else{
+			return "Biking";
+		}
+	}
+	
+	/**
 	 * Ends the current session and cleans up all monitoring components
 	 */
 	public void stopMonitoring(){
 		theChecker.stopMonitoring();
 	}
+
 }

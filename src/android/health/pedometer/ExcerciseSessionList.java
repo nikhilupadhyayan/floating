@@ -1,6 +1,7 @@
 package android.health.pedometer;
 
 import android.app.Activity;
+import android.health.gui.SessionStatusActivity;
 
 /**
  * 	This class is responsible for storing, managing, and allowing access to the history
@@ -15,14 +16,15 @@ public class ExcerciseSessionList {
 	
 	//Variables
 	Activity mActivity;
+	PedometerDatabaseAdapter theDB;
 	
-	public ExcerciseSessionList(Activity theActivity){
+	public ExcerciseSessionList(Activity theActivity, PedometerDatabaseAdapter newDB){
 		mActivity = theActivity;
+		theDB = newDB;
 	}
 	
 	/**
-	 * Creates a new ExerciseSession according to the specified type and
-	 * monitoring method.
+	 * Creates a new ExerciseSession according to the specified type and monitoring method.
 	 * 
 	 * @param travelType - The type of exercise the user is doing: 1 for walking, 2 for running, and 3 for biking.
 	 * @param useGPS - Boolean value whether to use the GPS to monitor the exercise or not. If the GPS is not used,
@@ -32,7 +34,16 @@ public class ExcerciseSessionList {
 	public ExcerciseSession addSession(int travelType, boolean useGPS){
 		ExcerciseSession newSession = new ExcerciseSession(travelType, useGPS, mActivity);
 		return newSession;
-		//TODO: Add the session to the list and store it to the filesystem
+	}
+	
+	/**
+	 * Must be called when a exercise session is complete so it can be logged in the database.
+	 * 
+	 * @param thatSession - The newly completed session to log.
+	 */
+	public void monitoringDone(ExcerciseSession thatSession, String title, long secondsTaken, long startTime){
+		String ExerciseType = thatSession.getTypeOfTravel();
+		theDB.createSession(title, thatSession.getDistance() + "", secondsTaken + "", startTime, thatSession.getTypeOfTravel(), thatSession.getMyCalories() + "");
 	}
 	
 	/**
@@ -44,14 +55,12 @@ public class ExcerciseSessionList {
 		//TODO: Remove the session
 	}
 	/**
-	 * Generates and returns key statistics about all recorded exercise from a certain
-	 * date onwards.
+	 * Queries the database for the stored information about a specific exercise session.
 	 * 
-	 * @param date - The date of the exercise session(s) to begin analyze
-	 * @return A String containing the core statistics about all exercise
-	 * sessions from this point onwards.
+	 * @param startTime - The start time of the session to receive info about
+	 * @return A String containing the data for this session in tab-delimited format
 	 */
-	public String getExcerciseStatistics(String date){
+	public String getExcerciseStatistics(long startTime){
 		//TODO: Implement the exercise statistics feature
 		return null;
 	}

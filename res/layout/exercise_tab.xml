@@ -14,7 +14,7 @@
     	android:id="@+id/sub_title"
     	android:layout_height="wrap_content"
     	android:layout_width="wrap_content"
-    	android:text="(Click on session for more info)"
+    	android:text="(Tap a session for more info)"
     	android:layout_centerHorizontal="true"
     	android:layout_below="@+id/title"
     	android:paddingBottom="5pt"/>
