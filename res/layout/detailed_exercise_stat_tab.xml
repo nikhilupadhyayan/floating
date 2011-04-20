@@ -1,30 +1,161 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
   xmlns:android="http://schemas.android.com/apk/res/android"
-  android:orientation="vertical"
   android:layout_width="fill_parent"
   android:layout_height="fill_parent">
     <TextView 
-    	android:text="Detailed Statistics" 
-    	android:id="@+id/title" 
+    	android:text="Session Title" 
+    	android:id="@+id/det_title" 
     	android:textSize="10pt"
+    	android:layout_width="wrap_content"
+    	android:gravity="center_vertical|center_horizontal"
     	android:layout_centerHorizontal="true"
-    	android:layout_width="wrap_content" 
-    	android:paddingBottom="10pt"
-    	android:layout_height="wrap_content"/>
+    	android:layout_height="25pt"/>
     <TextView 
-    	android:text="Implemented Later" 
-    	android:id="@+id/implement" 
-    	android:textSize="10pt"
-    	android:layout_below="@id/title"
-    	android:layout_centerHorizontal="true"
-    	android:layout_width="wrap_content" 
-    	android:layout_height="wrap_content"/>
+    	android:text="Exercise Type:" 
+    	android:id="@+id/det_exerc_type_label" 
+    	android:textSize="8pt"
+    	android:gravity="center_vertical|right"
+    	android:layout_gravity="center_vertical"
+    	android:layout_marginLeft="10pt"
+    	android:layout_width="60pt" 
+    	android:paddingBottom="3pt"
+    	android:layout_height="24pt"
+    	android:layout_below="@id/det_title"/>
+    
+    <TextView 
+    	android:text="Type" 
+    	android:id="@+id/det_exerc_type" 
+    	android:textSize="9pt"
+    	android:gravity="center_vertical|center_horizontal"
+    	android:layout_gravity="center_vertical"
+    	android:layout_marginLeft="10pt"
+    	android:layout_width="80pt" 
+    	android:paddingBottom="3pt"
+    	android:layout_height="24pt"
+    	android:textColor="#0099CC"
+    	android:layout_toRightOf="@+id/det_exerc_type_label"
+    	android:layout_below="@id/det_title"/>
+    
+    <TextView 
+    	android:text="Start Date:    Start Time:" 
+    	android:id="@+id/det_start_time_label" 
+    	android:textSize="8pt"
+    	android:gravity="center_vertical|right"
+    	android:layout_gravity="center_vertical"
+    	android:layout_marginLeft="10pt"
+    	android:layout_width="60pt" 
+    	android:paddingBottom="3pt"
+    	android:layout_height="24pt"
+    	android:layout_below="@+id/det_exerc_type"/>
+    
+    <TextView 
+    	android:text="00:00:00" 
+    	android:id="@+id/det_start_time" 
+    	android:textSize="9pt"
+    	android:gravity="center_vertical|center_horizontal"
+    	android:layout_gravity="center_vertical"
+    	android:layout_marginLeft="10pt"
+    	android:layout_width="80pt" 
+    	android:paddingBottom="3pt"
+    	android:layout_height="24pt"
+    	android:textColor="#0099CC"
+    	android:layout_toRightOf="@+id/det_start_time_label"
+    	android:layout_below="@+id/det_exerc_type"/>
+    	
+    <TextView 
+    	android:text="Session Length:" 
+    	android:id="@+id/det_time_taken_label" 
+    	android:textSize="8pt"
+    	android:gravity="center_vertical|right"
+    	android:layout_gravity="center_vertical"
+    	android:layout_marginLeft="10pt"
+    	android:layout_width="60pt" 
+    	android:paddingBottom="3pt"
+    	android:layout_height="24pt"
+    	android:layout_below="@+id/det_start_time"/>
+    
+    <TextView 
+    	android:text="0" 
+    	android:id="@+id/det_time_taken" 
+    	android:textSize="9pt"
+    	android:gravity="center_vertical|center_horizontal"
+    	android:layout_gravity="center_vertical"
+    	android:layout_marginLeft="10pt"
+    	android:layout_width="80pt" 
+    	android:paddingBottom="3pt"
+    	android:layout_height="24pt"
+    	android:textColor="#0099CC"
+    	android:layout_toRightOf="@+id/det_time_taken_label"
+    	android:layout_below="@+id/det_start_time"/>
+    	
+    <TextView 
+    	android:text="Distance Traveled:" 
+    	android:id="@+id/det_distance_traveled_label" 
+    	android:textSize="8pt"
+    	android:gravity="center_vertical|right"
+    	android:layout_gravity="center_vertical|center_horizontal"
+    	android:layout_marginLeft="10pt"
+    	android:layout_width="60pt" 
+    	android:paddingBottom="3pt"
+    	android:layout_height="24pt"
+    	android:layout_below="@+id/det_time_taken"/>
+    
+    <TextView 
+    	android:text="-" 
+    	android:id="@+id/det_distance_traveled" 
+    	android:textSize="9pt"
+    	android:gravity="center_vertical|center_horizontal"
+    	android:layout_gravity="center_vertical"
+    	android:layout_marginLeft="10pt"
+    	android:layout_width="80pt" 
+    	android:paddingBottom="3pt"
+    	android:layout_height="24pt"
+    	android:textColor="#0099CC"
+    	android:layout_toRightOf="@+id/det_distance_traveled_label"
+    	android:layout_below="@+id/det_time_taken"/>
+    	
+    <TextView 
+    	android:text="Calories Burned:" 
+    	android:id="@+id/det_calories_burned_label" 
+    	android:textSize="8pt"
+    	android:gravity="center_vertical|right"
+    	android:layout_gravity="center_vertical|center_horizontal"
+    	android:layout_marginLeft="10pt"
+    	android:layout_width="60pt" 
+    	android:paddingBottom="3pt"
+    	android:layout_height="24pt"
+    	android:layout_below="@+id/det_distance_traveled"/>
+    
+    <TextView 
+    	android:text="-" 
+    	android:id="@+id/det_calories_burned" 
+    	android:textSize="9pt"
+    	android:gravity="center_vertical|center_horizontal"
+    	android:layout_gravity="center_vertical|center_horizontal"
+    	android:layout_marginLeft="10pt"
+    	android:layout_width="80pt" 
+    	android:paddingBottom="3pt"
+    	android:layout_height="24pt"
+    	android:textColor="#0099CC"
+    	android:layout_toRightOf="@+id/det_calories_burned_label"
+    	android:layout_below="@+id/det_distance_traveled"/>
+    	
+    <Button 
+    	android:text="Delete Session" 
+    	android:id="@+id/button_delete_session" 
+    	android:layout_width="60pt" 
+    	android:layout_height="25pt" 
+    	android:layout_marginLeft="4pt"
+    	android:onClick="deleteSessionPressed"
+    	android:layout_alignParentBottom="true"/>
+    
     <Button 
     	android:text="Back" 
-    	android:id="@+id/button_back_stat" 
-    	android:layout_width="wrap_content" 
-    	android:layout_height="wrap_content" 
-    	android:layout_alignParentBottom="true" 
-    	android:layout_centerHorizontal="true"/>
+    	android:id="@+id/button_stop_viewing" 
+    	android:layout_width="60pt" 
+    	android:layout_height="25pt" 
+    	android:layout_marginRight="4pt"
+    	android:layout_alignParentBottom="true"
+    	android:layout_alignParentRight="true"/>
 </RelativeLayout>

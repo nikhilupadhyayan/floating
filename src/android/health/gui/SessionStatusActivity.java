@@ -19,6 +19,7 @@ import android.health.pedometer.PedometerDatabaseAdapter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
+import android.os.Vibrator;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -45,6 +46,7 @@ public class SessionStatusActivity extends Activity {
 	private ExcerciseSession thisSession;
 	private int caloriesLeft = 0;
 	private long startTime;
+	
 	private PedometerDatabaseAdapter theDB;
 	public static SessionStatusActivity me;
 	public Handler mHandler = new Handler();
@@ -80,6 +82,8 @@ public class SessionStatusActivity extends Activity {
         }else{
         	Toast.makeText(this, "Waiting for locational lock...", Toast.LENGTH_SHORT).show();
         }
+        
+        //TODO: Write AsyncTask to stop after duration limit
 	}
 	
 	public void stopButtonPresser(View theButton){
@@ -88,6 +92,7 @@ public class SessionStatusActivity extends Activity {
 	
 	public void startTimer(){
 		Toast.makeText(this, "Locational tracking has begun...", Toast.LENGTH_SHORT).show();
+		((Vibrator)getSystemService("vibrator")).vibrate(100);
 		timer.setBase(SystemClock.elapsedRealtime());
 		startTime = GregorianCalendar.getInstance().getTimeInMillis();
 		timer.start();
@@ -99,7 +104,8 @@ public class SessionStatusActivity extends Activity {
 		Calendar today = GregorianCalendar.getInstance();
 		today.setTimeInMillis(((long)(today.getTimeInMillis() / 8640000)) * 8640000); //Returns the record to midnight
 		
-		sessionList.monitoringDone(thisSession, myStuff.getString("Session Title"), GregorianCalendar.getInstance().getTimeInMillis() - startTime, startTime);
+		sessionList.monitoringDone(thisSession, myStuff.getString("Session Title"), timer.getText().toString(), startTime);
+		me = null;
 	}
 	
 	@Override

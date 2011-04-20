@@ -21,23 +21,23 @@
     <TextView 
     	android:layout_height="wrap_content" 
     	android:text="Session Name:" 
-    	android:paddingLeft="4pt"
-    	android:paddingRight="10pt" 
+    	android:paddingLeft="3pt"
+    	android:paddingRight="11pt" 
     	android:id="@+id/name" 
     	android:layout_width="wrap_content" 
     	android:layout_below="@+id/sub_title"/>
    	<TextView 
    		android:layout_height="wrap_content" 
-   		android:text="Cal.Burned:" 
+   		android:text="Cal. Burned:" 
    		android:id="@+id/burned" 
    		android:layout_width="wrap_content" 
    		android:layout_below="@+id/sub_title" 
    		android:layout_alignParentRight="true" 
-   		android:paddingRight="4pt"/>
+   		android:paddingRight="5pt"/>
     <TextView 
     	android:layout_height="wrap_content" 
     	android:text="Distance:" 
-    	android:paddingRight="10pt" 
+    	android:paddingRight="11pt" 
     	android:id="@+id/distance" 
     	android:layout_width="wrap_content" 
     	android:layout_toLeftOf="@id/burned"

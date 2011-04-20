@@ -164,13 +164,15 @@ public class PedometerDatabaseAdapter {
     }
 
     /**
-     * Return a Cursor positioned at the note that matches the given rowId
+     * Return a String containing the attributes of the row in tab-delimited
+     * format.
      * 
-     * @param rowId id of note to retrieve
-     * @return Cursor positioned to matching note, if found
-     * @throws SQLException if note could not be found/retrieved
+     * @param rowId id of session to retrieve
+     * @return String containing the attributes in tab-delimited format.
+     * @throws SQLException if session could not be found/retrieved
      */
-    public Cursor fetchSession(long rowId) throws SQLException {
+    public String fetchSession(long rowId) throws SQLException {
+    	String theAttributes = "";
         Cursor mCursor =
             mDb.query(true, DATABASE_TABLE, new String[] {KEY_ROWID, KEY_TITLE,
                     KEY_DISTANCE, KEY_TIME, KEY_DATE, KEY_TYPE, KEY_CALORIES}, KEY_ROWID + "=" + rowId, null,
@@ -178,7 +180,13 @@ public class PedometerDatabaseAdapter {
         if (mCursor != null) {
             mCursor.moveToFirst();
         }
-        return mCursor;
+        theAttributes += mCursor.getString(mCursor.getColumnIndex(KEY_TITLE));
+        theAttributes += "\t" + mCursor.getString(mCursor.getColumnIndex(KEY_DISTANCE));
+        theAttributes += "\t" + mCursor.getString(mCursor.getColumnIndex(KEY_TIME));
+        theAttributes += "\t" + mCursor.getLong(mCursor.getColumnIndex(KEY_DATE));
+        theAttributes += "\t" + mCursor.getString(mCursor.getColumnIndex(KEY_TYPE));
+        theAttributes += "\t" + mCursor.getString(mCursor.getColumnIndex(KEY_CALORIES));
+        return theAttributes;
     }
 
     /**
