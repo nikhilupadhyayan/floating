@@ -14,6 +14,8 @@ import java.util.TimerTask;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
+import android.health.manager.HealthCoach;
 import android.health.manager.R;
 import android.health.pedometer.ExcerciseSession;
 import android.health.pedometer.ExcerciseSessionList;
@@ -23,6 +25,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
 import android.os.Vibrator;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -45,11 +48,13 @@ public class SessionStatusActivity extends Activity {
 	private TextView caloriesLeftLabel;
 	private TextView travelType;
 	private TextView titleLabel;
+	private TextView caloriesLeftLabeler;
 	private ExcerciseSessionList sessionList;
 	private ExcerciseSession thisSession;
 	private int caloriesLeft = 0;
 	private long startTime;
 	private Timer theTimer;
+	private HealthCoach theCoach;
 	
 	private PedometerDatabaseAdapter theDB;
 	public static SessionStatusActivity me;
@@ -62,6 +67,8 @@ public class SessionStatusActivity extends Activity {
         me = this;
         theDB = new PedometerDatabaseAdapter(this).open();
         sessionList = new ExcerciseSessionList(SessionStatusActivity.this, theDB);
+        theCoach = new HealthCoach(PreferenceManager.getDefaultSharedPreferences(this), theDB);
+        caloriesLeft = theCoach.recommendCalories();
         setContentView(R.layout.session_status);
         myStuff = this.getIntent().getExtras();
         int exerciseType = myStuff.getInt("Exercise Type");
@@ -71,6 +78,11 @@ public class SessionStatusActivity extends Activity {
         distanceLabel = (TextView)findViewById(R.id.distance_traveled);
         caloriesLabel = (TextView)findViewById(R.id.calories_burned);
         caloriesLeftLabel = (TextView)findViewById(R.id.calories_left);
+        caloriesLeftLabeler = (TextView)findViewById(R.id.calories_left_label);
+        if(caloriesLeft > 0){
+        	caloriesLeftLabel.setTextColor(Color.RED);
+        	caloriesLeftLabeler.setText("Calories Left:");
+        }
         titleLabel = (TextView)findViewById(R.id.title);
         travelType = (TextView)findViewById(R.id.exercise_type);
         
@@ -162,8 +174,14 @@ public class SessionStatusActivity extends Activity {
 		Log.i("SessionStatus", "Received calories = " + calories);
 		distanceLabel.setText("" + (float)(distance / 100.0) + "m");
 		caloriesLabel.setText("" + calories + "");
-		caloriesLeft -= calories < caloriesLeft ? calories : caloriesLeft;
-		caloriesLeftLabel.setText("" + caloriesLeft);
+		if (caloriesLeft > calories){
+			caloriesLeftLabel.setText("" + (caloriesLeft - calories));
+		}else{
+			caloriesLeftLabel.setTextColor(Color.GREEN);
+			caloriesLeftLabeler.setText("Calorie Surplus:");
+			caloriesLeftLabel.setText("" + (calories - caloriesLeft));
+		}
+		
 	}
 
 }

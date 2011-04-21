@@ -14,7 +14,10 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.health.manager.HealthCoach;
 import android.health.manager.R;
+import android.health.pedometer.PedometerDatabaseAdapter;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -32,6 +35,7 @@ import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.RadioButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class NewExerciseSessionActivity extends Activity {
@@ -59,9 +63,25 @@ public class NewExerciseSessionActivity extends Activity {
                 // Perform action on clicks
             	Intent intent = new Intent().setClass(NewExerciseSessionActivity.this, TabSelector.class);
             	startActivity(intent);
-                
             }
         });
+        
+        TextView recommended_calories = (TextView)findViewById(R.id.recommended_calories);
+        TextView recommended_calories_label = (TextView)findViewById(R.id.recommended_calories_label);
+        PedometerDatabaseAdapter theDB = new PedometerDatabaseAdapter(this).open();
+        HealthCoach theCoach = new HealthCoach(PreferenceManager.getDefaultSharedPreferences(this), theDB);
+        int recommendedCalories = theCoach.recommendCalories();
+        if (recommendedCalories < 0){
+        	recommended_calories.setTextColor(Color.GREEN);
+        	recommended_calories_label.setText("Excess Calories Burned:");
+        	recommended_calories.setText("" + (-1 * recommendedCalories));
+        }else{
+        	recommended_calories.setTextColor(Color.RED);
+        	recommended_calories_label.setText("Calories Left to Burn:");
+        	recommended_calories.setText("" + (recommendedCalories));
+        }
+        
+        
         final EditText duration_limit = (EditText)findViewById(R.id.check_limit_box);
         final CheckBox limit_duration = (CheckBox)findViewById(R.id.check_limit);
         limit_duration.setOnCheckedChangeListener(new OnCheckedChangeListener() {

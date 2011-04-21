@@ -1,67 +1,99 @@
 package android.health.manager;
 
+import java.util.Currency;
+
+import android.content.SharedPreferences;
+import android.health.pedometer.PedometerDatabaseAdapter;
+
 /**
- * This class is responsible for managing the health coach functionality,
- * which includes doling out advice to the user based on their relative
- * habits towards diet and exercise.
+ * This class is responsible for handling all application interaction with the actual calorie
+ * summaries of both intake and expenditure through exercise. This class also makes this information
+ * available to the rest of the application, as well as providing all the caloric balancing advice. 
  * 
- * @author John Mauldin
+ * @author John Mauldin - Initial code stub and Diet Manager query support
+ * @author Joel Botner - Pedometer Database query support and caloric balancer functionality
  */
 
 public class HealthCoach {
 
-	/*Keeps a running total of calories, obtained from both the Pedometer
-	 * and Diet Plan part of the application.
-	 */
-	int totalCalories;
-	/*Array filled with the different pieces of advice that the HealthCoach
-	 * will return to the user.
-	 */
-	String advice[];
+	//Variables
+	PedometerDatabaseAdapter pedometerDB;
+	int balancingWindow;
+	SharedPreferences preferences;
+	double burningPercentage;
 	
-	/*Takes in a piece of nutrition info and compares it with the recommended
-	 * daily percent, returning true if higher than the dailypercent
-	 * 
-	 * @param variable the specific piece of nutrition info being tested
-	 * @return returns true if the specific variable is higher than
-	 * the recommended daily amount
-	 */
-	boolean isValueHigh(String variable){
-		//TODO: check if specific variable is higher than the suggested
-		//daily percent value
+	public HealthCoach(SharedPreferences thePrefs, PedometerDatabaseAdapter exerciseDB){   //JOHNTODO Add your meal database object so HealthCoach is able to query both of them
+		pedometerDB = exerciseDB;
+		preferences = thePrefs;
+		balancingWindow = Integer.valueOf(preferences.getString("balancingWindow", "1"));
+		burningPercentage = Double.valueOf(preferences.getString("caloriePercentage", "30")) / 100.0;
+	}
 		
-		return true;
-	}
-	
-	/*
-	 * Based on certain criteria (to be determined as proect developes)
-	 * said method will return premade pieces of advice that will better
-	 * inform the user of their relative health habits
-	 */
-	String returnAdvice(){
-		//TODO: establish criteria and return specific string when
-		// said criteria is met
-		return null;
-	}
-	/*
-	 * Calculates the total calorie value by adding the total calorie values
-	 * given from the Pedometer and Diet Logging Functions
-	 */
-	int getTotalCalories(){
-		//TODO: add total calories
-		int a = 0;
-		return a;
-	}
-	
-	/*Takes the current number of calories burned/consumed for the day, and
-	 * recommends how many more calories should be burned/consumed
+	/**
+	 * This queries the exercise logs database to obtain how many calories were burned
+	 * through exercise over the window specified (1 is the last 24 hours, 2 is the last
+	 * 7 days, and 3 is the last 30 days)
 	 * 
-	 * @param calories the total caloric debt of the user
+	 * @param window - Which window to obtain calorie burned during.
+	 * @return The number of calories the user burned over the course of this window.
 	 */
-	int recommendCalories(int calories){
-		//TODO: returns the relative difference denoting how many more/less
-		//calories should be consumed in a day
-		int a = 0;
-		return a;
+	public int getTotalCaloriesBurned(int window){
+		long time = System.currentTimeMillis();
+		if(window == 1){
+			time -= 1000 * 3600 * 24;
+			return pedometerDB.getCalsBurnedSince(System.currentTimeMillis() - time);
+		}else if(window == 2){
+			time -= 1000 * 3600 * 24 * 7;
+			return pedometerDB.getCalsBurnedSince(System.currentTimeMillis() - time);
+		}else{
+			time -= 1000 * 3600 * 24 * 30;
+			return pedometerDB.getCalsBurnedSince(System.currentTimeMillis() - time);
+		}
+	}
+	
+	/**
+	 * This queries the logged meals database to obtain how many calories were consumed
+	 * over the window specified (1 is the last 24 hours, 2 is the last 7 days, and 3 is
+	 * the last 30 days)
+	 * 
+	 * @param window - Which window to obtain caloric consumption for.
+	 * @return The number of calories the user ate over this window.
+	 */
+	public int getTotalCaloriesEaten(int window){
+		if(window == 1){
+			//JOHNTODO Get the calories eaten within the last 24 hours
+		}else if(window == 2){
+			//JOHNTODO Get the calories eaten within the last 7 days
+		}else{
+			//JOHNTODO Get the calories eaten within the last 30 days
+		}
+		
+		return 80; //PLACEHOLDER: Just so the code compiles, remove this when you pop in your code
+	}
+	
+	/**
+	 * Identifies how many calories still need to be burned to achieve the minimal
+	 * calories burned goal.
+	 * 
+	 * @return How many calories must still be burned to achieve the minimal calories
+	 * burned goal over this window. A negative value means you have surpassed your
+	 * goal by the specified amount.
+	 */
+	public int recommendCalories(){
+		int target = (int)((getTotalCaloriesEaten(balancingWindow) * burningPercentage) - getTotalCaloriesBurned(balancingWindow));
+		return target;
+	}
+	
+	/**
+	 * Identifies how many calories still need to be burned to achieve the minimal
+	 * calories burned goal. Same as above recommendCalories(), but you can 
+	 * 
+	 * @return How many calories must still be burned to achieve the minimal calories
+	 * burned goal over the specified window. A negative value means you have surpassed
+	 * your goal by the specified amount.
+	 */
+	public int recommendCalories(int window){
+		int target = (int)((getTotalCaloriesEaten(window) * burningPercentage) - getTotalCaloriesBurned(window));
+		return target;
 	}
 }

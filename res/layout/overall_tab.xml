@@ -9,24 +9,253 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="@string/calories_burned"
-        android:textSize="8pt" 
-        android:layout_marginBottom="10pt"
+        android:textSize="10pt"
+        android:textColor="#FFFFFF"
+        android:layout_marginBottom="6pt"
         android:layout_marginLeft="4pt"/>
+    <TextView 
+    	android:text="24 Hours:" 
+    	android:id="@+id/burned_one_day_label" 
+    	android:textSize="8pt"
+    	android:gravity="center_vertical|right"
+    	android:layout_gravity="center_vertical"
+    	android:layout_marginLeft="10pt"
+    	android:layout_width="60pt" 
+    	android:paddingBottom="1pt"
+    	android:layout_height="13pt"
+    	android:layout_below="@+id/burned"/>
+    
+    <TextView 
+    	android:text="Number" 
+    	android:id="@+id/burned_one_day" 
+    	android:textSize="8pt"
+    	android:gravity="center_vertical|center_horizontal"
+    	android:layout_gravity="center_vertical"
+    	android:layout_marginLeft="10pt"
+    	android:layout_width="80pt" 
+    	android:paddingBottom="1pt"
+    	android:layout_height="13pt"
+    	android:textColor="#0099CC"
+    	android:layout_toRightOf="@+id/burned_one_day_label"
+    	android:layout_below="@+id/burned"/>
+    <TextView 
+    	android:text="7 Days:" 
+    	android:id="@+id/burned_one_week_label" 
+    	android:textSize="8pt"
+    	android:gravity="center_vertical|right"
+    	android:layout_gravity="center_vertical"
+    	android:layout_marginLeft="10pt"
+    	android:layout_width="60pt" 
+    	android:paddingBottom="1pt"
+    	android:layout_height="13pt"
+    	android:layout_below="@+id/burned_one_day_label"/>
+    
+    <TextView 
+    	android:text="Number" 
+    	android:id="@+id/burned_one_week" 
+    	android:textSize="8pt"
+    	android:gravity="center_vertical|center_horizontal"
+    	android:layout_gravity="center_vertical"
+    	android:layout_marginLeft="10pt"
+    	android:layout_width="80pt" 
+    	android:paddingBottom="1pt"
+    	android:layout_height="13pt"
+    	android:textColor="#0099CC"
+    	android:layout_toRightOf="@+id/burned_one_week_label"
+    	android:layout_below="@+id/burned_one_day_label"/>
+    <TextView 
+    	android:text="30 Days:" 
+    	android:id="@+id/burned_thirty_days_label" 
+    	android:textSize="8pt"
+    	android:gravity="center_vertical|right"
+    	android:layout_gravity="center_vertical"
+    	android:layout_marginLeft="10pt"
+    	android:layout_width="60pt" 
+    	android:paddingBottom="1pt"
+    	android:layout_height="13pt"
+    	android:layout_below="@+id/burned_one_week_label"/>
+    
+    <TextView 
+    	android:text="Number" 
+    	android:id="@+id/burned_thirty_days" 
+    	android:textSize="8pt"
+    	android:gravity="center_vertical|center_horizontal"
+    	android:layout_gravity="center_vertical"
+    	android:layout_marginLeft="10pt"
+    	android:layout_width="80pt" 
+    	android:paddingBottom="1pt"
+    	android:layout_height="13pt"
+    	android:textColor="#0099CC"
+    	android:layout_toRightOf="@+id/burned_thirty_days_label"
+    	android:layout_below="@+id/burned_one_week_label"/>
     <TextView
     	android:id="@+id/consumed"
     	android:layout_width="fill_parent"
     	android:layout_height="wrap_content"
     	android:text="@string/calories_consumed"
-        android:textSize="8pt" 
-        android:layout_below="@id/burned"
-        android:layout_marginBottom="10pt"
+        android:textSize="10pt"
+        android:textColor="#FFFFFF"
+        android:layout_below="@+id/burned_thirty_days_label"
+        android:layout_marginBottom="6pt"
         android:layout_marginLeft="4pt"/>
+    <TextView 
+    	android:text="24 Hours:" 
+    	android:id="@+id/consumed_one_day_label" 
+    	android:textSize="8pt"
+    	android:gravity="center_vertical|right"
+    	android:layout_gravity="center_vertical"
+    	android:layout_marginLeft="10pt"
+    	android:layout_width="60pt" 
+    	android:paddingBottom="1pt"
+    	android:layout_height="13pt"
+    	android:layout_below="@+id/consumed"/>
+    
+    <TextView 
+    	android:text="Number" 
+    	android:id="@+id/consumed_one_day" 
+    	android:textSize="8pt"
+    	android:gravity="center_vertical|center_horizontal"
+    	android:layout_gravity="center_vertical"
+    	android:layout_marginLeft="10pt"
+    	android:layout_width="80pt" 
+    	android:paddingBottom="1pt"
+    	android:layout_height="13pt"
+    	android:textColor="#0099CC"
+    	android:layout_toRightOf="@+id/consumed_one_day_label"
+    	android:layout_below="@+id/consumed"/>
+    <TextView 
+    	android:text="7 Days:" 
+    	android:id="@+id/consumed_one_week_label" 
+    	android:textSize="8pt"
+    	android:gravity="center_vertical|right"
+    	android:layout_gravity="center_vertical"
+    	android:layout_marginLeft="10pt"
+    	android:layout_width="60pt" 
+    	android:paddingBottom="1pt"
+    	android:layout_height="13pt"
+    	android:layout_below="@+id/consumed_one_day_label"/>
+    
+    <TextView 
+    	android:text="Number" 
+    	android:id="@+id/consumed_one_week" 
+    	android:textSize="8pt"
+    	android:gravity="center_vertical|center_horizontal"
+    	android:layout_gravity="center_vertical"
+    	android:layout_marginLeft="10pt"
+    	android:layout_width="80pt" 
+    	android:paddingBottom="1pt"
+    	android:layout_height="13pt"
+    	android:textColor="#0099CC"
+    	android:layout_toRightOf="@+id/consumed_one_week_label"
+    	android:layout_below="@+id/consumed_one_day_label"/>
+    <TextView 
+    	android:text="30 Days:" 
+    	android:id="@+id/consumed_thirty_days_label" 
+    	android:textSize="8pt"
+    	android:gravity="center_vertical|right"
+    	android:layout_gravity="center_vertical"
+    	android:layout_marginLeft="10pt"
+    	android:layout_width="60pt" 
+    	android:paddingBottom="1pt"
+    	android:layout_height="13pt"
+    	android:layout_below="@+id/consumed_one_week_label"/>
+    
+    <TextView 
+    	android:text="Number" 
+    	android:id="@+id/consumed_thirty_days" 
+    	android:textSize="8pt"
+    	android:gravity="center_vertical|center_horizontal"
+    	android:layout_gravity="center_vertical"
+    	android:layout_marginLeft="10pt"
+    	android:layout_width="80pt" 
+    	android:paddingBottom="1pt"
+    	android:layout_height="13pt"
+    	android:textColor="#0099CC"
+    	android:layout_toRightOf="@+id/consumed_thirty_days_label"
+    	android:layout_below="@+id/consumed_one_week_label"/>
     <TextView
     	android:id="@+id/total"
     	android:layout_width="fill_parent"
     	android:layout_height="wrap_content"
     	android:text="@string/calories_total"
-    	android:layout_below="@id/consumed"
-        android:textSize="8pt"
+    	android:textColor="#FFFFFF"
+    	android:layout_marginBottom="6pt"
+    	android:layout_below="@+id/consumed_thirty_days"
+        android:textSize="10pt"
         android:layout_marginLeft="4pt"/>
+    <TextView 
+    	android:text="24 Hours:" 
+    	android:id="@+id/total_one_day_label" 
+    	android:textSize="8pt"
+    	android:gravity="center_vertical|right"
+    	android:layout_gravity="center_vertical"
+    	android:layout_marginLeft="10pt"
+    	android:layout_width="60pt" 
+    	android:paddingBottom="1pt"
+    	android:layout_height="13pt"
+    	android:layout_below="@+id/total"/>
+    
+    <TextView 
+    	android:text="Number" 
+    	android:id="@+id/total_one_day" 
+    	android:textSize="8pt"
+    	android:gravity="center_vertical|center_horizontal"
+    	android:layout_gravity="center_vertical"
+    	android:layout_marginLeft="10pt"
+    	android:layout_width="80pt" 
+    	android:paddingBottom="1pt"
+    	android:layout_height="13pt"
+    	android:textColor="#0099CC"
+    	android:layout_toRightOf="@+id/total_one_day_label"
+    	android:layout_below="@+id/total"/>
+    <TextView 
+    	android:text="7 Days:" 
+    	android:id="@+id/total_one_week_label" 
+    	android:textSize="8pt"
+    	android:gravity="center_vertical|right"
+    	android:layout_gravity="center_vertical"
+    	android:layout_marginLeft="10pt"
+    	android:layout_width="60pt" 
+    	android:paddingBottom="1pt"
+    	android:layout_height="13pt"
+    	android:layout_below="@+id/total_one_day_label"/>
+    
+    <TextView 
+    	android:text="Number" 
+    	android:id="@+id/total_one_week" 
+    	android:textSize="8pt"
+    	android:gravity="center_vertical|center_horizontal"
+    	android:layout_gravity="center_vertical"
+    	android:layout_marginLeft="10pt"
+    	android:layout_width="80pt" 
+    	android:paddingBottom="1pt"
+    	android:layout_height="13pt"
+    	android:textColor="#0099CC"
+    	android:layout_toRightOf="@+id/total_one_week_label"
+    	android:layout_below="@+id/total_one_day_label"/>
+    <TextView 
+    	android:text="30 Days:" 
+    	android:id="@+id/total_thirty_days_label" 
+    	android:textSize="8pt"
+    	android:gravity="center_vertical|right"
+    	android:layout_gravity="center_vertical"
+    	android:layout_marginLeft="10pt"
+    	android:layout_width="60pt" 
+    	android:paddingBottom="1pt"
+    	android:layout_height="13pt"
+    	android:layout_below="@+id/total_one_week_label"/>
+    
+    <TextView 
+    	android:text="Number" 
+    	android:id="@+id/total_thirty_days" 
+    	android:textSize="8pt"
+    	android:gravity="center_vertical|center_horizontal"
+    	android:layout_gravity="center_vertical"
+    	android:layout_marginLeft="10pt"
+    	android:layout_width="80pt" 
+    	android:paddingBottom="1pt"
+    	android:layout_height="13pt"
+    	android:textColor="#0099CC"
+    	android:layout_toRightOf="@+id/total_thirty_days_label"
+    	android:layout_below="@+id/total_one_week_label"/>
 </RelativeLayout>

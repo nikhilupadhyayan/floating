@@ -44,16 +44,23 @@
 	<PreferenceCategory
     	android:title="Health Manager Options">
 		<EditTextPreference
-		    android:summary="In kilograms"
+		    android:summary="Your body weight in kilograms"
 		    android:defaultValue="70"
 		    android:title="Body Weight"
 		    android:inputType="numberDecimal"
 		    android:key="bodyWeight" />
 		<EditTextPreference
-		    android:summary="Percentage of calories you wish to be burned during exercise"
+		    android:summary="Minimum percentage of calorie intake to burn during exercise"
 		    android:defaultValue="30"
-		    android:title="Calorie Percentage"
+		    android:title="Minimum Calorie Usage"
 		    android:inputType="numberDecimal"
 		    android:key="caloriePercentage" />
+		<ListPreference
+			android:title="Calorie Balance Window"
+			android:summary="Target period over which to balance calories"
+			android:defaultValue="1"
+			android:entries="@array/balancer_window"
+			android:entryValues="@array/balancer_window_values"
+			android:key="balancingWindow"/>
 	</PreferenceCategory>
 </PreferenceScreen>

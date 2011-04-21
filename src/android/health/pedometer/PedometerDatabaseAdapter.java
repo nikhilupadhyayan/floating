@@ -180,7 +180,7 @@ public class PedometerDatabaseAdapter {
     	//NOTE: What I'm doing here is I'm requesting all database entries, but filtering by date
     	//Not that I've tested it yet, that should come soon    	
     	return mDb.query(true, DATABASE_TABLE, new String[] {KEY_ROWID, KEY_TITLE,
-                KEY_DISTANCE, KEY_TIME, KEY_DATE, KEY_TYPE, KEY_CALORIES}, KEY_DATE + "<=" + date, null,
+                KEY_DISTANCE, KEY_TIME, KEY_DATE, KEY_TYPE, KEY_CALORIES}, KEY_DATE + ">=" + date, null,
                 null, null, null, null);
     }
 

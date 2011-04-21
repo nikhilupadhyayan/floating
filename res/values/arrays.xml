@@ -19,4 +19,14 @@
 		<item name="2">2</item>
 		<item name="2">3</item>
 	</string-array>
+	<string-array name="balancer_window">
+		<item name="1">24 Hours</item>
+		<item name="2">7 Days</item>
+		<item name="3">30 Day</item>
+	</string-array>
+	<string-array name="balancer_window_values">
+		<item name="1">1</item>
+		<item name="2">2</item>
+		<item name="2">3</item>
+	</string-array>
 </resources>
