@@ -15,6 +15,7 @@ import android.content.Intent;
 import android.health.manager.R;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -66,12 +67,13 @@ public class DietTabActivity extends Activity {
 	}
 	// updates the date in the TextView
 	public boolean onCreateOptionsMenu(Menu menu) {
-		menu.add(Menu.NONE, 0, 0, "Preferences");
-		return super.onCreateOptionsMenu(menu);
+		MenuInflater inflater = getMenuInflater();
+	    inflater.inflate(R.menu.main_menu, menu);
+	    return true;
 	}
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch(item.getItemId()) {
-		case 0:
+		case R.id.preferences:
 			startActivity(new Intent(this, Preferences.class));
 			return true;
 		}
