@@ -72,8 +72,10 @@ public class ExerciseTabActivity extends Activity {
         	 
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            	//TODO: Add the Bundle with the embedded id
             	Intent intent = new Intent(ExerciseTabActivity.this, ExerciseStatisticsActivity.class);
+            	Bundle rowHolder = new Bundle();
+            	rowHolder.putLong("Row ID", id);
+            	intent.putExtras(rowHolder);
             	startActivity(intent);
             }
         });

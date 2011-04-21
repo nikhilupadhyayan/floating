@@ -27,6 +27,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnKeyListener;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
@@ -61,6 +62,16 @@ public class NewExerciseSessionActivity extends Activity {
                 
             }
         });
+        final EditText duration_limit = (EditText)findViewById(R.id.check_limit_box);
+        final CheckBox limit_duration = (CheckBox)findViewById(R.id.check_limit);
+        limit_duration.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+			
+			@Override
+			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+				duration_limit.setEnabled(isChecked);
+			}
+		});
+        
         
       //Watch the Session Title Field
         final EditText sessionTitle = (EditText) findViewById(R.id.title_edit);
@@ -156,6 +167,16 @@ public class NewExerciseSessionActivity extends Activity {
     		  sessionParameters.putString("Session Title", sessionTitle.getText().toString());
     		  sessionParameters.putInt("Exercise Type", exerciseType);
     		  sessionParameters.putBoolean("Use GPS", gpsButton.isChecked());
+    		  sessionParameters.putBoolean("Limit Checked", limit_duration.isChecked());
+    		  try{
+    			  if (((double)Double.valueOf(duration_limit.getText().toString()) <= 0) || duration_limit.getText().toString().equalsIgnoreCase("")){
+    				  sessionParameters.putString("Limit Number", "-1");
+    			  }else{
+    				  sessionParameters.putString("Limit Number", duration_limit.getText().toString());
+    			  }
+    		  } catch (NumberFormatException e){
+    			  sessionParameters.putString("Limit Number", "-1");
+    		  }
     		  
               // Perform action on clicks
     		  Intent intent = new Intent().setClass(NewExerciseSessionActivity.this, SessionStatusActivity.class);

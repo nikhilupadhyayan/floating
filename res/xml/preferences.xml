@@ -10,7 +10,7 @@
 		    android:inputType="number"
 		    android:key="stepSensitivity" />
 		<EditTextPreference
-		    android:summary="The length of your steps when exercising"
+		    android:summary="The length of your steps when exercising (centimeters)"
 		    android:defaultValue="60"
 		    android:title="Step Length"
 		    android:inputType="number"
@@ -31,7 +31,7 @@
 		    android:summary="Choose frequency of location-based distance updates"
 		    android:defaultValue="6"
 		    android:title="Location Update Interval"
-		    android:inputType="number"
+		    android:inputType="numberDecimal"
 		    android:key="updateInterval" />
 		<ListPreference
 			android:title="Tracking Accuracy"
@@ -47,13 +47,13 @@
 		    android:summary="In kilograms"
 		    android:defaultValue="70"
 		    android:title="Body Weight"
-		    android:inputType="number"
+		    android:inputType="numberDecimal"
 		    android:key="bodyWeight" />
 		<EditTextPreference
 		    android:summary="Percentage of calories you wish to be burned during exercise"
 		    android:defaultValue="30"
 		    android:title="Calorie Percentage"
-		    android:inputType="number"
+		    android:inputType="numberDecimal"
 		    android:key="caloriePercentage" />
 	</PreferenceCategory>
 </PreferenceScreen>

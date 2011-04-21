@@ -41,9 +41,9 @@ public class ExcerciseSessionList {
 	 * 
 	 * @param thatSession - The newly completed session to log.
 	 */
-	public void monitoringDone(ExcerciseSession thatSession, String title, long secondsTaken, long startTime){
+	public void monitoringDone(ExcerciseSession thatSession, String title, String secondsTaken, long startTime){
 		String ExerciseType = thatSession.getTypeOfTravel();
-		theDB.createSession(title, thatSession.getDistance() + "", secondsTaken + "", startTime, thatSession.getTypeOfTravel(), thatSession.getMyCalories() + "");
+		theDB.createSession(title, thatSession.getDistance() + "m", secondsTaken + "", startTime, thatSession.getTypeOfTravel(), thatSession.getMyCalories() + "");
 	}
 	
 	/**
