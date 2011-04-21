@@ -17,11 +17,11 @@ public class Meal {
 	 */
 	LinkedList<Food> FoodList;
 	
-	//May be unnecessary 
+
 	/*
 	 * Keeps track of how many calories are contained in said meal
 	 */
-	//int calories;
+	int calories = 0;
 	
 	
 	/*
@@ -29,6 +29,7 @@ public class Meal {
 	 */
 	void addFood(Food food){
 		this.FoodList.add(food);
+		calories = calories + food.calories;
 	}
 	
 	/*
@@ -47,18 +48,5 @@ public class Meal {
 	 */
 	Food getFood(int instance){
 		return this.FoodList.get(instance);
-	}
-	
-	/*
-	 * Returns the added calorie total of every food item in the array
-	 */
-	int getMealCalories(){
-		//TODO: For loop may effect speed
-		int total = 0;
-		for(int i = 0; i < FoodList.size(); i++){
-			total += FoodList.get(i).calories;
-		}
-		//calories = total;
-		return total;
 	}
 }

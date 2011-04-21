@@ -17,6 +17,9 @@ public class MealList {
 	 */
 	int date;
 	
+	//Keeps track of how many calories are in the total list of meals
+	int calories = 0;
+	
 	/*
 	 * An LinkedList that holds all individuals meals for a meal list
 	 */
@@ -37,6 +40,7 @@ public class MealList {
 	 */
 	void addMeal(Meal meal){
 		this.MealList.add(meal);
+		calories = calories + meal.calories;
 	}
 	/*
 	 * Removes a specific meal from the list
@@ -48,16 +52,6 @@ public class MealList {
 		this.MealList.remove(this.MealList.get(meal));
 	}
 	
-	/*
-	 * Returns the added calories of all the meals in the list
-	 */
-	int getTotalCalories(){
-		int a = 0;
-		for(int i = 0; i < MealList.size(); i++){
-			a += MealList.get(i).getMealCalories();
-		}
-		return a;
-	}
 	
 	/*
 	 * Returns the desired meal object from the list

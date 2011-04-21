@@ -9,9 +9,11 @@ package android.health.gui;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
+import android.health.dietlogging.DietDatabaseAdapter;
 import android.health.manager.HealthCoach;
 import android.health.manager.R;
 import android.health.pedometer.PedometerDatabaseAdapter;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.Menu;
@@ -20,9 +22,19 @@ import android.view.MenuItem;
 import android.widget.TextView;
 
 public class OverallTabActivity extends Activity {
+	boolean dbLoaded;
+	DietDatabaseAdapter dietDB;
+	
+	public static OverallTabActivity me;
+
+	
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.overall_tab);
+        me = this;
+        createDatabase task = new createDatabase();
+       	dbLoaded = task.equals(dbLoaded);
+
         
         //General variables
         PedometerDatabaseAdapter theDB = new PedometerDatabaseAdapter(this).open();
@@ -77,6 +89,10 @@ public class OverallTabActivity extends Activity {
         	total_thirty_days.setText("-" + (recommendation));
         }
         
+        
+        //John's work:
+        
+        
 	}
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
@@ -91,4 +107,12 @@ public class OverallTabActivity extends Activity {
 		}
 		return false;
 	}
+	
+	private class createDatabase extends AsyncTask<Boolean, Void, Boolean> {
+        protected Boolean doInBackground(Boolean...Boolean) {
+        	dietDB = dietDB.open();
+        	return true;
+        }
+    }
+
 }
