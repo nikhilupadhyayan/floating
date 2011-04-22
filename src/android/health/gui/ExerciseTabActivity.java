@@ -6,9 +6,6 @@ package android.health.gui;
  * @author Dan Abrams
  */
 
-import java.util.ArrayList;
-import java.util.HashMap;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
@@ -22,7 +19,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
-import android.widget.SimpleAdapter;
 import android.widget.SimpleCursorAdapter;
 
 public class ExerciseTabActivity extends Activity {

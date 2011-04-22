@@ -16,6 +16,7 @@ import android.health.pedometer.PedometerDatabaseAdapter;
 import android.os.Bundle;
 import android.text.format.DateFormat;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -81,19 +82,20 @@ public class ExerciseStatisticsActivity extends Activity {
         typeLabel.setText(attributeChopper.nextToken("\t"));
         caloriesLabel.setText(attributeChopper.nextToken("\t"));
 	}
-	public boolean onCreateOptionsMenu(Menu menu) {
-		menu.add(Menu.NONE, 0, 0, "Preferences");
-		return super.onCreateOptionsMenu(menu);
-	}
 	
 	public void deleteSessionPressed(View theButton){
 		theDB.deleteSession(recordID);
         this.finish();
 	}
 	
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater inflater = getMenuInflater();
+	    inflater.inflate(R.menu.main_menu, menu);
+	    return true;
+	}
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch(item.getItemId()) {
-		case 0:
+		case R.id.preferences:
 			startActivity(new Intent(this, Preferences.class));
 			return true;
 		}
