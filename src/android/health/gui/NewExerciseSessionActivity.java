@@ -70,7 +70,7 @@ public class NewExerciseSessionActivity extends Activity {
         TextView recommended_calories = (TextView)findViewById(R.id.recommended_calories);
         TextView recommended_calories_label = (TextView)findViewById(R.id.recommended_calories_label);
         PedometerDatabaseAdapter theDB = new PedometerDatabaseAdapter(this).open();
-        HealthCoach theCoach = new HealthCoach(PreferenceManager.getDefaultSharedPreferences(this), theDB);
+        HealthCoach theCoach = new HealthCoach(PreferenceManager.getDefaultSharedPreferences(this), theDB, this);
         int recommendedCalories = theCoach.recommendCalories();
         if (recommendedCalories < 0){
         	recommended_calories.setTextColor(Color.GREEN);

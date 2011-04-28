@@ -1,7 +1,6 @@
 package android.health.manager;
 
-import java.util.Currency;
-
+import android.app.Activity;
 import android.content.SharedPreferences;
 import android.health.pedometer.PedometerDatabaseAdapter;
 
@@ -20,9 +19,10 @@ public class HealthCoach {
 	PedometerDatabaseAdapter pedometerDB;
 	int balancingWindow;
 	SharedPreferences preferences;
+	Activity theContext;
 	double burningPercentage;
 	
-	public HealthCoach(SharedPreferences thePrefs, PedometerDatabaseAdapter exerciseDB){   //JOHNTODO Add your meal database object so HealthCoach is able to query both of them
+	public HealthCoach(SharedPreferences thePrefs, PedometerDatabaseAdapter exerciseDB, Activity callingActivity){   //JOHNTODO Add your meal database object so HealthCoach is able to query both of them
 		pedometerDB = exerciseDB;
 		preferences = thePrefs;
 		balancingWindow = Integer.valueOf(preferences.getString("balancingWindow", "1"));
@@ -60,15 +60,17 @@ public class HealthCoach {
 	 * @return The number of calories the user ate over this window.
 	 */
 	public int getTotalCaloriesEaten(int window){
+		long time = System.currentTimeMillis();
 		if(window == 1){
-			//JOHNTODO Get the calories eaten within the last 24 hours
+			time -= 1000 * 3600 * 24;
+			return pedometerDB.getCalsEatenSince(System.currentTimeMillis() - time);
 		}else if(window == 2){
-			//JOHNTODO Get the calories eaten within the last 7 days
+			time -= 1000 * 3600 * 24 * 7;
+			return pedometerDB.getCalsEatenSince(System.currentTimeMillis() - time);
 		}else{
-			//JOHNTODO Get the calories eaten within the last 30 days
+			time -= 1000 * 3600 * 24 * 30;
+			return pedometerDB.getCalsEatenSince(System.currentTimeMillis() - time);
 		}
-		
-		return 80; //PLACEHOLDER: Just so the code compiles, remove this when you pop in your code
 	}
 	
 	/**

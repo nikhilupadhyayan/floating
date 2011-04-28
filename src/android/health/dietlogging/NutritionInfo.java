@@ -2,16 +2,18 @@ package android.health.dietlogging;
 
 import java.io.File;
 
-/*
+/**
  * This Class takes the values from the repository of information
  * and creates an object that contains the various pieces of
- * nutrition info needed for reference, upon request, by the user
+ * nutrition info needed for reference by the user.
  * 
  * @author John Mauldin
  */
 public class NutritionInfo {
 	
-	//TODO: Need to write code that will create NutritionInfo object from the NTInfo
+	/**
+	 * This constructs a NutritionInfo based off of the specified nutrient amounts.
+	 */
 	public NutritionInfo(double protein, double carbs, double fiber, double sugar, double calcium,
 			double iron, double magnesium, double phosphorus, double potassium, double sodium,
 			double zinc, double vit_c, double vit_b6, double vit_b12, double vit_aiu,
@@ -111,7 +113,7 @@ public class NutritionInfo {
 	//String that has the name of the food in it
 	String name;
 
-	/*
+	/**
 	 * Array of constants that keep track of the recommended daily value for
 	 * for each piece of nutrition info.
 	 * Each value in terms of grams, except for Calories
@@ -142,13 +144,20 @@ public class NutritionInfo {
 	final double Daily[] = { 50,300,25,40,10,.18,4,10,35,24,.015,.6,.02,.0006,
 			5000, 5000, 30, 400, .008, .03, 2000};
 	
-	//Returns the nutritional info condensed into one string
+	/**
+	 * Returns the nutritional info condensed into one string
+	 * @return All nutrition information stored in a single string for simplicity
+	 */
 	String getInfo(){
 		return allInfo;
 	}
 	
-	//Returns a specified piece of nutrition info
-	//if instance is out of bounds, returns -1
+	/**
+	 * Returns a specified piece of nutrition info
+	 * 
+	 * @param instance - The index of nutrient information to return.
+	 * @return The nutrient information specified. -1 if this index does not exist.
+	 */
 	double getVariable(int instance){
 		if(instance == 0)
 			return this.protein;
@@ -218,8 +227,8 @@ public class NutritionInfo {
 	double getVitD(){return this.vit_d;}
 	double getVitK(){return this.vit_k;}
 	
-	/*
-	 * Returns the daily percentage of a specific variabale that corresponds to the
+	/**
+	 * Returns the daily percentage of a specific variable that corresponds to the
 	 * list of daily values
 	 * 
 	 * @param int should correspond to which piece of nutrition info is needed

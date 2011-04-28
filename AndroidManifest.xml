@@ -32,6 +32,7 @@
 			</intent-filter>		
 	<service android:name="android.health.pedometer.StepService"/>
 	<service android:name="android.health.pedometer.DistanceService"/>
+	<service android:name="android.health.dietlogging.FDAimportService"/>
     </application>
     <uses-sdk android:minSdkVersion="7" />
 

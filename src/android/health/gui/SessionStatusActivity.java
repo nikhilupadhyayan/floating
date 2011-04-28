@@ -13,6 +13,8 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.health.manager.HealthCoach;
@@ -67,7 +69,7 @@ public class SessionStatusActivity extends Activity {
         me = this;
         theDB = new PedometerDatabaseAdapter(this).open();
         sessionList = new ExcerciseSessionList(SessionStatusActivity.this, theDB);
-        theCoach = new HealthCoach(PreferenceManager.getDefaultSharedPreferences(this), theDB);
+        theCoach = new HealthCoach(PreferenceManager.getDefaultSharedPreferences(this), theDB, this);
         caloriesLeft = theCoach.recommendCalories();
         setContentView(R.layout.session_status);
         myStuff = this.getIntent().getExtras();
@@ -124,9 +126,7 @@ public class SessionStatusActivity extends Activity {
 			stopRunnable = new TimerTask(){
 				@Override
 				public void run() {
-					Log.i("NumberLimit", "Runnable Activated");
 					if (SessionStatusActivity.me != null){
-						Log.i("NumberLimit", "Runnable Acting");
 						SessionStatusActivity.me.stopMonitoring();
 						((Vibrator)getSystemService("vibrator")).vibrate(200);
 						try {Thread.sleep(500);} catch (InterruptedException e) {}
@@ -154,13 +154,29 @@ public class SessionStatusActivity extends Activity {
 		Calendar today = GregorianCalendar.getInstance();
 		today.setTimeInMillis(((long)(today.getTimeInMillis() / 8640000)) * 8640000); //Returns the record to midnight
 		
-		sessionList.monitoringDone(thisSession, myStuff.getString("Session Title"), timer.getText().toString(), startTime);
+		if(PreferenceManager.getDefaultSharedPreferences(this).getBoolean("foodDatabaseImported", false)){
+    		// Perform action on clicks
+			sessionList.monitoringDone(thisSession, myStuff.getString("Session Title"), timer.getText().toString(), startTime, true);
+			SessionStatusActivity.this.finish();
+    	}else{
+    		AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+    		alertDialog.setMessage("Sorry, Exercise Sessions cannot be logged until the Food Database has been completely imported.");
+    		final AlertDialog theDialog = alertDialog;
+    		alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
+    		   public void onClick(DialogInterface dialog, int which) {
+    			  sessionList.monitoringDone(thisSession, myStuff.getString("Session Title"), timer.getText().toString(), startTime, false);
+    		      SessionStatusActivity.this.finish();
+    		   }
+    		});
+    		alertDialog.show();
+    	}
+		
+		
 	}
 	
 	@Override
 	public void onBackPressed() {
 		stopMonitoring();
-		this.finish();
 	   return;
 	}
 

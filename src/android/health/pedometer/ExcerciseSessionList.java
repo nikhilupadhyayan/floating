@@ -1,5 +1,7 @@
 package android.health.pedometer;
 
+import java.util.GregorianCalendar;
+
 import android.app.Activity;
 import android.health.gui.SessionStatusActivity;
 
@@ -39,41 +41,17 @@ public class ExcerciseSessionList {
 	/**
 	 * Must be called when a exercise session is complete so it can be logged in the database.
 	 * 
-	 * @param thatSession - The newly completed session to log.
+	 * @param thatSession - The {@link ExcerciseSession} that was just completed.
+	 * @param title - The name of this exercise session.
+	 * @param secondsTaken - How many seconds the user took to complete this session
+	 * @param startTime - The start time of this exercise session according to {@link GregorianCalendar} format
+	 * @param logThis - Whether or not to log this session to the database
 	 */
-	public void monitoringDone(ExcerciseSession thatSession, String title, String secondsTaken, long startTime){
+	public void monitoringDone(ExcerciseSession thatSession, String title, String secondsTaken, long startTime, boolean logThis){
 		String ExerciseType = thatSession.getTypeOfTravel();
-		theDB.createSession(title, thatSession.getDistance() + "m", secondsTaken + "", startTime, thatSession.getTypeOfTravel(), thatSession.getMyCalories() + "");
+		if(logThis){
+			theDB.createSession(title, thatSession.getDistance() + "m", secondsTaken + "", startTime, thatSession.getTypeOfTravel(), thatSession.getMyCalories() + "");
+		}
 	}
 	
-	/**
-	 * Removes the specified ExerciseSession from the user's history.
-	 * 
-	 * @param session The specific session to remove.
-	 */
-	public void deleteSession(ExcerciseSession session){
-		//TODO: Remove the session
-	}
-	/**
-	 * Queries the database for the stored information about a specific exercise session.
-	 * 
-	 * @param startTime - The start time of the session to receive info about
-	 * @return A String containing the data for this session in tab-delimited format
-	 */
-	public String getExcerciseStatistics(long startTime){
-		//TODO: Implement the exercise statistics feature
-		return null;
-	}
-	/**
-	 * Returns the ExcerciseSession that occurred on a specific day and sequence number.
-	 * 
-	 * @param date - The date of the desired exercise session (with the session 
-	 * number for that day concatenated e.g. <b>"4-4-2011 3"</b> for the third
-	 * session on April 4th, 2011).
-	 * @return The ExerciseSession specified by that specific date string, null if not found.
-	 */
-	public ExcerciseSession getExcerciseSession(String date){
-		//TODO: Implement the search feature
-		return null;
-	}
 }

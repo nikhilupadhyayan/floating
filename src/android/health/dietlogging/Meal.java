@@ -2,7 +2,7 @@ package android.health.dietlogging;
 
 import java.util.LinkedList;
 
-/*
+/**
  * This class is essentially a linked list responsible for storing, managing,
  * and allowing access to the food objects stored within a specific meal object.
  * 
@@ -24,7 +24,7 @@ public class Meal {
 	int calories = 0;
 	
 	
-	/*
+	/**
 	 * Adds a food object to the list of food objects within a meal
 	 */
 	void addFood(Food food){
@@ -32,7 +32,7 @@ public class Meal {
 		calories = calories + food.calories;
 	}
 	
-	/*
+	/**
 	 * Removes a food object from the list
 	 * 
 	 * @param food instance of food item to be deleted
@@ -41,7 +41,7 @@ public class Meal {
 		this.FoodList.remove(this.FoodList.get(food));
 	}
 	
-	/*
+	/**
 	 * Returns specified food item from the list
 	 * 
 	 * @param instance location of food item within the array

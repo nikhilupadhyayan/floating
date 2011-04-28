@@ -11,7 +11,7 @@
     	android:paddingBottom="20pt"
     	android:layout_height="wrap_content"
     	android:layout_centerHorizontal="true"/>
-  <EditText
+  <AutoCompleteTextView
         android:id="@+id/meal_name"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -19,13 +19,59 @@
         android:layout_marginRight="10pt"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="5pt"
-        android:text="Enter food name here"
         android:layout_below="@id/title"/>
-  <Button 
-    	android:text="Back" 
-    	android:id="@+id/button_back_maker" 
+   <TextView 
+    	android:text="Grams eaten:" 
+    	android:id="@+id/grams_eaten_label" 
+    	android:textSize="10pt"
     	android:layout_width="wrap_content" 
-    	android:layout_height="wrap_content" 
-    	android:layout_alignParentBottom="true" 
-    	android:layout_centerHorizontal="true"/>
+    	android:layout_height="wrap_content"
+    	android:layout_below="@+id/meal_name"/>
+   <EditText 
+    	android:id="@+id/grams_eaten" 
+    	android:textSize="7pt"
+    	android:text="0"
+    	android:inputType="numberDecimal"
+    	android:enabled="false"
+    	android:layout_alignParentRight="true"
+    	android:layout_width="wrap_content" 
+    	android:paddingTop="6pt"
+    	android:layout_height="wrap_content"
+    	android:layout_toRightOf="@+id/grams_eaten_label"
+    	android:layout_below="@+id/meal_name"/>
+    <Button 
+    	android:text="Save Food" 
+    	android:id="@+id/button_save_food" 
+    	android:layout_width="70pt" 
+    	android:layout_height="20pt"
+    	android:layout_centerHorizontal="true"
+    	android:layout_marginRight="4pt"
+    	android:layout_below="@id/grams_eaten"/>
+    <EditText 
+    	android:id="@+id/food_log" 
+    	android:textSize="7pt"
+    	android:inputType="none"
+    	android:editable="false"
+    	android:layout_width="fill_parent" 
+    	android:layout_height="fill_parent" 
+    	android:paddingTop="6pt"
+    	android:layout_above="@+id/button_remove_food"
+    	android:gravity="top"
+    	android:layout_below="@+id/button_save_food"/>
+  <Button 
+    	android:text="Save Meal" 
+    	android:id="@+id/button_save_meal" 
+    	android:layout_width="70pt" 
+    	android:layout_height="20pt" 
+    	android:layout_marginLeft="4pt"
+    	android:layout_alignParentBottom="true"/>
+    
+    <Button 
+    	android:text="Remove Last Food" 
+    	android:id="@+id/button_remove_food" 
+    	android:layout_width="70pt" 
+    	android:layout_height="20pt" 
+    	android:layout_marginRight="4pt"
+    	android:layout_alignParentBottom="true"
+    	android:layout_alignParentRight="true"/>
 </RelativeLayout>
