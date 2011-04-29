@@ -6,6 +6,7 @@ import java.util.GregorianCalendar;
 import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
+import android.database.CursorIndexOutOfBoundsException;
 import android.health.manager.R;
 import android.health.pedometer.PedometerDatabaseAdapter;
 import android.os.Bundle;
@@ -141,8 +142,13 @@ public class MealMakerActivity extends Activity {
                 //Save the food information
                 numFoods++;
                 numFoods = numFoods > 200 ? 200 : numFoods;
-                foodCalories[numFoods - 1] = (int)(recentCursor.getDouble(recentCursor.getColumnIndex(PedometerDatabaseAdapter.KEY_CALORIES_STORED)) * Double.valueOf(GramsEaten.getText().toString()) / 100.0);
-                currentCalories += foodCalories[numFoods - 1];
+                try{
+                	foodCalories[numFoods - 1] = (int)(recentCursor.getDouble(recentCursor.getColumnIndex(PedometerDatabaseAdapter.KEY_CALORIES_STORED)) * Double.valueOf(GramsEaten.getText().toString()) / 100.0);
+                } catch (CursorIndexOutOfBoundsException e){
+                	recentCursor.move(-1);
+                	foodCalories[numFoods - 1] = (int)(recentCursor.getDouble(recentCursor.getColumnIndex(PedometerDatabaseAdapter.KEY_CALORIES_STORED)) * Double.valueOf(GramsEaten.getText().toString()) / 100.0);
+                }
+                	currentCalories += foodCalories[numFoods - 1];
                 
                 FoodLogView.setText(FoodLogView.getText() + foodText + "\t" + GramsEaten.getText() + "g\n");
                 myFoodView.setText("");

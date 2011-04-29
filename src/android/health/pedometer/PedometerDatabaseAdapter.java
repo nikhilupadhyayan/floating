@@ -106,6 +106,7 @@ public class PedometerDatabaseAdapter {
             Log.w(TAG, "Upgrading database from version " + oldVersion + " to " + newVersion + ", which will destroy all old data");
             db.execSQL("DROP TABLE IF EXISTS sessions");
             db.execSQL("DROP TABLE IF EXISTS fdaDetails");
+            db.execSQL("DROP TABLE IF EXISTS mealDetails");
             onCreate(db);
         }
     }

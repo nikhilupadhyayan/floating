@@ -1,5 +1,7 @@
 package android.health.manager;
 
+import java.util.GregorianCalendar;
+
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.health.pedometer.PedometerDatabaseAdapter;
@@ -22,7 +24,7 @@ public class HealthCoach {
 	Activity theContext;
 	double burningPercentage;
 	
-	public HealthCoach(SharedPreferences thePrefs, PedometerDatabaseAdapter exerciseDB, Activity callingActivity){   //JOHNTODO Add your meal database object so HealthCoach is able to query both of them
+	public HealthCoach(SharedPreferences thePrefs, PedometerDatabaseAdapter exerciseDB, Activity callingActivity){
 		pedometerDB = exerciseDB;
 		preferences = thePrefs;
 		balancingWindow = Integer.valueOf(preferences.getString("balancingWindow", "1"));
@@ -38,16 +40,16 @@ public class HealthCoach {
 	 * @return The number of calories the user burned over the course of this window.
 	 */
 	public int getTotalCaloriesBurned(int window){
-		long time = System.currentTimeMillis();
+		long time = 1000 * 3600 * 24;
 		if(window == 1){
-			time -= 1000 * 3600 * 24;
-			return pedometerDB.getCalsBurnedSince(System.currentTimeMillis() - time);
+			time = System.currentTimeMillis() - time;
+			return pedometerDB.getCalsBurnedSince(time);
 		}else if(window == 2){
-			time -= 1000 * 3600 * 24 * 7;
-			return pedometerDB.getCalsBurnedSince(System.currentTimeMillis() - time);
+			time = System.currentTimeMillis() - (time * 7);
+			return pedometerDB.getCalsBurnedSince(time);
 		}else{
-			time -= 1000 * 3600 * 24 * 30;
-			return pedometerDB.getCalsBurnedSince(System.currentTimeMillis() - time);
+			time = System.currentTimeMillis() - (time * 30);
+			return pedometerDB.getCalsBurnedSince(time);
 		}
 	}
 	
@@ -60,16 +62,16 @@ public class HealthCoach {
 	 * @return The number of calories the user ate over this window.
 	 */
 	public int getTotalCaloriesEaten(int window){
-		long time = System.currentTimeMillis();
+		long time = 1000 * 3600 * 24;
 		if(window == 1){
-			time -= 1000 * 3600 * 24;
-			return pedometerDB.getCalsEatenSince(System.currentTimeMillis() - time);
+			time = GregorianCalendar.getInstance().getTimeInMillis() - time;
+			return pedometerDB.getCalsEatenSince(time);
 		}else if(window == 2){
-			time -= 1000 * 3600 * 24 * 7;
-			return pedometerDB.getCalsEatenSince(System.currentTimeMillis() - time);
+			time = GregorianCalendar.getInstance().getTimeInMillis() - (time * 7);
+			return pedometerDB.getCalsEatenSince(time);
 		}else{
-			time -= 1000 * 3600 * 24 * 30;
-			return pedometerDB.getCalsEatenSince(System.currentTimeMillis() - time);
+			time = GregorianCalendar.getInstance().getTimeInMillis() - (time * 30);
+			return pedometerDB.getCalsEatenSince(time);
 		}
 	}
 	
